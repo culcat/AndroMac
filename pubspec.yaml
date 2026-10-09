@@ -18,3 +18,4 @@ workspace:
   - packages/features/otp
   - packages/features/file_transfer
   - tools/fake_phone
+  - tools/fake_mac
