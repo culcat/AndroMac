@@ -9,3 +9,4 @@ workspace:
   - packages/bridge_protocol
   - packages/bridge_crypto
   - packages/bridge_transport
+  - packages/bridge_core
