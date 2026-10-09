@@ -1,0 +1,16 @@
+name: bridge_platform
+description: Type-safe native platform channel interfaces and Pigeon specifications for Android and macOS
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+resolution: workspace
+
+dependencies:
+  meta: ^1.15.0
+  bridge_protocol: ^0.1.0
+  bridge_core: ^0.1.0
+
+dev_dependencies:
+  test: ^1.25.0

@@ -10,6 +10,7 @@ workspace:
   - packages/bridge_crypto
   - packages/bridge_transport
   - packages/bridge_core
+  - packages/bridge_platform
   - packages/features/clipboard
   - packages/features/notifications
   - packages/features/sms
