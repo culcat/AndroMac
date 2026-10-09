@@ -1,0 +1,35 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# IDE & Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Flutter & Dart
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Android
+apps/phone/android/.gradle/
+apps/phone/android/local.properties
+apps/phone/android/app/build/
+*.keystore
+*.jks
+
+# macOS Native
+apps/desktop/macos/Flutter/ephemeral/
+apps/desktop/macos/Pods/
+*.xcworkspace
+*.xcuserdatad
+
+# Logs
+*.log
