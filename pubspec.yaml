@@ -15,4 +15,5 @@ workspace:
   - packages/features/notifications
   - packages/features/sms
   - packages/features/device_status
+  - packages/features/otp
   - tools/fake_phone
