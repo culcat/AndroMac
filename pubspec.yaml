@@ -18,5 +18,6 @@ workspace:
   - packages/features/device_status
   - packages/features/otp
   - packages/features/file_transfer
+  - packages/features/remote_control
   - tools/fake_phone
   - tools/fake_mac
