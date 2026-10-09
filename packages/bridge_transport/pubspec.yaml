@@ -1,0 +1,16 @@
+name: bridge_transport
+description: Local network discovery, mTLS WebSocket client/server, heartbeat, and reconnection for AndroMac
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+resolution: workspace
+
+dependencies:
+  meta: ^1.15.0
+  bridge_protocol: ^0.1.0
+  bridge_crypto: ^0.1.0
+
+dev_dependencies:
+  test: ^1.25.0
