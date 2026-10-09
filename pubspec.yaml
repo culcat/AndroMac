@@ -10,3 +10,4 @@ workspace:
   - packages/bridge_crypto
   - packages/bridge_transport
   - packages/bridge_core
+  - tools/fake_phone
