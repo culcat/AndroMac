@@ -13,4 +13,5 @@ workspace:
   - packages/features/clipboard
   - packages/features/notifications
   - packages/features/sms
+  - packages/features/device_status
   - tools/fake_phone
