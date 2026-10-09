@@ -1,0 +1,9 @@
+name: andromac_workspace
+description: Monorepo workspace for AndroMac (Bridge)
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+
+workspace:
+  - packages/bridge_protocol
