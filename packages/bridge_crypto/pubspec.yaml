@@ -1,0 +1,14 @@
+name: bridge_crypto
+description: Cryptography, certificate pinning, QR pairing data, and SAS verification for AndroMac
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+resolution: workspace
+
+dependencies:
+  meta: ^1.15.0
+
+dev_dependencies:
+  test: ^1.25.0
