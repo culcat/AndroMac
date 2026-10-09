@@ -11,4 +11,5 @@ workspace:
   - packages/bridge_transport
   - packages/bridge_core
   - packages/features/clipboard
+  - packages/features/notifications
   - tools/fake_phone
