@@ -25,3 +25,4 @@ dependencies:
 
 dev_dependencies:
   test: ^1.25.0
+  andromac_phone: ^0.1.0
