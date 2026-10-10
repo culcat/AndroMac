@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'package:flutter/widgets.dart';
 import 'package:bridge_platform/bridge_platform.dart';
 import 'package:andromac_phone/phone_app.dart';
 
 void main(List<String> args) async {
+  WidgetsFlutterBinding.ensureInitialized();
   print('====================================================');
   print('     AndroMac Android Phone Controller (Engine)     ');
   print('====================================================');
