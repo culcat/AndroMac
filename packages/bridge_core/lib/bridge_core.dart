@@ -9,3 +9,5 @@ export 'src/models/notification_item.dart';
 export 'src/models/sms_thread_item.dart';
 export 'src/models/clipboard_item.dart';
 export 'src/event_bus.dart';
+export 'src/storage/storage_records.dart';
+export 'src/storage/bridge_storage.dart';
