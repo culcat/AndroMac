@@ -8,6 +8,8 @@ environment:
 resolution: workspace
 
 dependencies:
+  flutter:
+    sdk: flutter
   meta: ^1.15.0
   bridge_protocol: ^0.1.0
   bridge_crypto: ^0.1.0
@@ -25,3 +27,6 @@ dependencies:
 
 dev_dependencies:
   test: ^1.25.0
+
+flutter:
+  uses-material-design: true

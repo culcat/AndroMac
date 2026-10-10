@@ -14,13 +14,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Dart SDK
-        uses: dart-lang/setup-dart@v1
+      - name: Setup Flutter SDK
+        uses: subosito/flutter-action@v2
         with:
-          sdk: stable
+          channel: 'stable'
+          cache: true
+
+      - name: Enable macOS Desktop
+        run: flutter config --enable-macos-desktop
 
       - name: Install dependencies
-        run: dart pub get
+        run: flutter pub get
 
       - name: Check code formatting
         run: dart format --output=none --set-exit-if-changed .
@@ -29,4 +33,4 @@ jobs:
         run: dart analyze --fatal-infos
 
       - name: Run Package Tests
-        run: dart test test/ $(find packages tools apps -name "*_test.dart")
+        run: flutter test test/ $(find packages tools apps -name "*_test.dart")
