@@ -1,0 +1,61 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+android {
+    namespace "com.andromac.bridge"
+    compileSdk 35
+    ndkVersion flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
+    defaultConfig {
+        applicationId "com.andromac.bridge"
+        minSdk 26
+        targetSdk 35
+        versionCode 1
+        versionName "1.0.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    flavorDimensions = ["distribution"]
+
+    productFlavors {
+        direct {
+            dimension "distribution"
+            applicationIdSuffix ""
+            versionNameSuffix "-direct"
+            // Direct distribution (Full feature set: SMS send/receive, direct updates)
+        }
+        play {
+            dimension "distribution"
+            applicationIdSuffix ".play"
+            versionNameSuffix "-play"
+            // Google Play compliant distribution (Complies with SMS permission policy)
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.debug
+            minifyEnabled false
+            shrinkResources false
+        }
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.22"
+    implementation "androidx.core:core-ktx:1.12.0"
+    implementation "androidx.appcompat:appcompat:1.6.1"
+}

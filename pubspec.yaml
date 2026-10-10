@@ -21,3 +21,4 @@ workspace:
   - packages/features/remote_control
   - tools/fake_phone
   - tools/fake_mac
+  - apps/phone

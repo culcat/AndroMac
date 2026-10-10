@@ -1,0 +1,27 @@
+name: andromac_phone
+description: Android phone application shell, controller, and background engine for AndroMac
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.6.0
+resolution: workspace
+
+dependencies:
+  meta: ^1.15.0
+  bridge_protocol: ^0.1.0
+  bridge_crypto: ^0.1.0
+  bridge_transport: ^0.1.0
+  bridge_core: ^0.1.0
+  bridge_platform: ^0.1.0
+  bridge_ui: ^0.1.0
+  clipboard_feature: ^0.1.0
+  notifications_feature: ^0.1.0
+  sms_feature: ^0.1.0
+  device_status_feature: ^0.1.0
+  otp_feature: ^0.1.0
+  file_transfer_feature: ^0.1.0
+  remote_control_feature: ^0.1.0
+
+dev_dependencies:
+  test: ^1.25.0
