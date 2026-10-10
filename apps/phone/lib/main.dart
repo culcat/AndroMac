@@ -20,7 +20,8 @@ void main(List<String> args) async {
   print('Phone service running and ready for connection.');
 
   controller.onStatusChanged.listen((status) {
-    print('[Status Update] State: ${status.state.name}, Peer: ${status.peerDeviceId ?? "none"}');
+    print(
+        '[Status Update] State: ${status.state.name}, Peer: ${status.peerDeviceId ?? "none"}');
   });
 
   controller.onRingAlert.listen((reason) {

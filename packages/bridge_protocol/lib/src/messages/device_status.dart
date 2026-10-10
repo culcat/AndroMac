@@ -11,20 +11,24 @@ class DeviceStatusPayload {
   final int? wifiSignalStrength; // 0 - 4
   final bool isDndActive; // Do Not Disturb status
 
+  int? get signalStrength => wifiSignalStrength;
+
   const DeviceStatusPayload({
     required this.batteryLevel,
     required this.isCharging,
     required this.networkType,
-    this.wifiSignalStrength,
+    int? wifiSignalStrength,
+    int? signalStrength,
     this.isDndActive = false,
-  });
+  }) : wifiSignalStrength = wifiSignalStrength ?? signalStrength;
 
   factory DeviceStatusPayload.fromMap(Map<String, dynamic> map) {
     return DeviceStatusPayload(
       batteryLevel: map['batteryLevel'] as int? ?? 0,
       isCharging: map['isCharging'] as bool? ?? false,
       networkType: map['networkType'] as String? ?? 'none',
-      wifiSignalStrength: map['wifiSignalStrength'] as int?,
+      wifiSignalStrength:
+          (map['wifiSignalStrength'] ?? map['signalStrength']) as int?,
       isDndActive: map['isDndActive'] as bool? ?? false,
     );
   }

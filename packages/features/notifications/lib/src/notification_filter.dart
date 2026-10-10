@@ -37,6 +37,12 @@ class NotificationFilter {
   bool isBlocked(String packageName) =>
       _blockedPackages.contains(packageName.toLowerCase());
 
+  /// Returns true if [packageName] should be filtered out / dropped.
+  bool shouldFilter(String packageName, {bool isOngoing = false}) {
+    if (_filterOngoing && isOngoing) return true;
+    return isBlocked(packageName);
+  }
+
   /// Evaluates whether a notification should be mirrored to Mac.
   bool shouldMirror(NotificationPostedPayload payload) {
     final pkg = payload.packageName.toLowerCase();

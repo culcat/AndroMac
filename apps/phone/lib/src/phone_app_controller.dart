@@ -48,7 +48,8 @@ class PhoneAppController {
     String? localDeviceId,
     this.deviceName = 'Android Device',
     AndroidBridgePlatform? platform,
-  })  : localDeviceId = localDeviceId ?? 'phone-${CryptoUtils.generateNumericOtp(6)}',
+  })  : localDeviceId =
+            localDeviceId ?? 'phone-${CryptoUtils.generateNumericOtp(6)}',
         platform = platform ?? AndroidBridgePlatform.instance {
     _initializeFeatures();
     _setupPlatformInteractions();
@@ -87,25 +88,25 @@ class PhoneAppController {
     });
 
     // Handle outbound SMS dispatch request from Mac
-    sms.onSendRequested = (address, body, simSlot, clientMessageId) async {
+    sms.onSendRequested = (payload, messageId) async {
       final success = await platform.sendSms(
-        address: address,
-        body: body,
-        simSlot: simSlot,
-        clientMessageId: clientMessageId,
+        address: payload.address,
+        body: payload.body,
+        simSlot: payload.simSlot,
+        clientMessageId: payload.clientMessageId,
       );
-      if (clientMessageId != null) {
+      if (payload.clientMessageId != null) {
         sms.confirmDelivery(
-          clientMessageId: clientMessageId,
-          status: success ? 'sent' : 'failed',
+          clientMessageId: payload.clientMessageId!,
+          success: success,
           errorMessage: success ? null : 'Failed to dispatch SMS via platform',
         );
       }
     };
 
     // Handle "Find My Phone" alert request from Mac
-    deviceStatus.onRingRequested = (reason) {
-      _ringAlertController.add(reason);
+    deviceStatus.onRingRequested = ([reason]) {
+      _ringAlertController.add(reason ?? 'Find My Phone');
     };
   }
 
@@ -113,12 +114,16 @@ class PhoneAppController {
     platform.registerCallbacks(
       onNotificationPosted: (notifMap) {
         final item = NotificationItem(
-          key: notifMap['key'] as String? ?? 'notif-${DateTime.now().millisecondsSinceEpoch}',
-          packageName: notifMap['packageName'] as String? ?? 'com.android.unknown',
+          key: notifMap['key'] as String? ??
+              'notif-${DateTime.now().millisecondsSinceEpoch}',
+          packageName:
+              notifMap['packageName'] as String? ?? 'com.android.unknown',
           appName: notifMap['appName'] as String? ?? 'App',
           title: notifMap['title'] as String? ?? '',
           text: notifMap['text'] as String? ?? '',
-          postTime: notifMap['postTime'] as int? ?? DateTime.now().millisecondsSinceEpoch,
+          postedAt: DateTime.fromMillisecondsSinceEpoch(
+              notifMap['postTime'] as int? ??
+                  DateTime.now().millisecondsSinceEpoch),
           canReply: notifMap['canReply'] as bool? ?? false,
         );
         notifications.postNotification(item);
@@ -129,8 +134,10 @@ class PhoneAppController {
       onSmsReceived: (smsMap) {
         final address = smsMap['address'] as String? ?? 'Unknown';
         final body = smsMap['body'] as String? ?? '';
-        final timestamp = smsMap['timestamp'] as int? ?? DateTime.now().millisecondsSinceEpoch;
-        final messageId = smsMap['messageId'] as String? ?? 'sms-${DateTime.now().millisecondsSinceEpoch}';
+        final timestamp = smsMap['timestamp'] as int? ??
+            DateTime.now().millisecondsSinceEpoch;
+        final messageId = smsMap['messageId'] as String? ??
+            'sms-${DateTime.now().millisecondsSinceEpoch}';
         final threadId = smsMap['threadId'] as String? ?? address;
 
         sms.receiveSms(

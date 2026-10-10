@@ -64,9 +64,12 @@ void main() {
 
     test('throws FormatException on malformed envelope', () {
       expect(() => Envelope.decode('{"v": "invalid"}'), throwsFormatException);
-      expect(() => Envelope.decode('{"v": 1, "id": 123}'), throwsFormatException);
-      expect(() => Envelope.decode('{"v": 1, "id": "abc"}'), throwsFormatException);
-      expect(() => Envelope.decode('{"v": 1, "id": "abc", "type": "ping"}'), throwsFormatException);
+      expect(
+          () => Envelope.decode('{"v": 1, "id": 123}'), throwsFormatException);
+      expect(() => Envelope.decode('{"v": 1, "id": "abc"}'),
+          throwsFormatException);
+      expect(() => Envelope.decode('{"v": 1, "id": "abc", "type": "ping"}'),
+          throwsFormatException);
     });
 
     test('generateUlid produces 26-character Crockford Base32 strings', () {

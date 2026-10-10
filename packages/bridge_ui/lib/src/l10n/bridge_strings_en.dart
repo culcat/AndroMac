@@ -172,6 +172,5 @@ class BridgeStringsEn implements BridgeStrings {
   String get allChecksPassed => 'All checks passed successfully';
 
   @override
-  String checksSummary(int passed, int total) =>
-      '$passed/$total checks passed';
+  String checksSummary(int passed, int total) => '$passed/$total checks passed';
 }

@@ -6,13 +6,15 @@ import 'feature_context.dart';
 /// Central registry managing lifecycle, capability negotiation, and message routing for [BridgeFeature]s.
 class FeatureRegistry {
   final Map<String, BridgeFeature> _features = <String, BridgeFeature>{};
-  final Map<String, Set<BridgeFeature>> _typeRouting = <String, Set<BridgeFeature>>{};
+  final Map<String, Set<BridgeFeature>> _typeRouting =
+      <String, Set<BridgeFeature>>{};
   final Set<String> _activeFeatureIds = <String>{};
 
   /// Registers a feature plugin.
   void register(BridgeFeature feature) {
     if (_features.containsKey(feature.id)) {
-      throw ArgumentError('Feature with id "${feature.id}" is already registered');
+      throw ArgumentError(
+          'Feature with id "${feature.id}" is already registered');
     }
     _features[feature.id] = feature;
 

@@ -43,7 +43,8 @@ class PairAcceptPayload {
 
   final String deviceId;
   final String deviceName;
-  final String sasCode; // Short Authentication String (e.g. 6-digit number or emojis)
+  final String
+      sasCode; // Short Authentication String (e.g. 6-digit number or emojis)
   final String publicKeyFingerprint;
 
   const PairAcceptPayload({

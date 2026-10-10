@@ -8,7 +8,8 @@ class FileTransferCardConfig {
   final int fileSizeBytes;
   final int transferredBytes;
   final bool isOutbound;
-  final String state; // 'offered', 'transferring', 'completed', 'failed', 'cancelled'
+  final String
+      state; // 'offered', 'transferring', 'completed', 'failed', 'cancelled'
   final String? errorMessage;
 
   const FileTransferCardConfig({
@@ -73,5 +74,6 @@ class FileTransferCardConfig {
   }
 
   @override
-  String toString() => '$directionLabel $fileName: $progressDescription [$statusBadge]';
+  String toString() =>
+      '$directionLabel $fileName: $progressDescription [$statusBadge]';
 }

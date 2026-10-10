@@ -20,6 +20,9 @@ class OtpFeature implements BridgeFeature {
 
   FeatureContext? _context;
 
+  /// Currently attached [FeatureContext].
+  FeatureContext? get context => _context;
+
   /// Optional callback invoked when a verification code is extracted (e.g. for automatic clipboard copy).
   void Function(OtpItem item)? onOtpDetected;
 
@@ -73,7 +76,8 @@ class OtpFeature implements BridgeFeature {
     if (code != null) {
       final item = OtpItem(
         code: code,
-        sender: payload.appName.isNotEmpty ? payload.appName : payload.packageName,
+        sender:
+            payload.appName.isNotEmpty ? payload.appName : payload.packageName,
         fullText: payload.text,
         source: 'notification',
         timestamp: DateTime.fromMillisecondsSinceEpoch(payload.postTime),

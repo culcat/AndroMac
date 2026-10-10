@@ -28,7 +28,8 @@ abstract class MacOsBridgePlatform {
 
   /// Callbacks invoked from Swift into Flutter
   void registerCallbacks({
-    required void Function(String identifier, String actionId, String? replyText)
+    required void Function(
+            String identifier, String actionId, String? replyText)
         onNotificationAction,
     required void Function(String identifier) onNotificationDismissed,
     required void Function() onSystemSleep,
@@ -72,7 +73,8 @@ class _UnimplementedMacOsPlatform extends MacOsBridgePlatform {
 
   @override
   void registerCallbacks({
-    required void Function(String identifier, String actionId, String? replyText)
+    required void Function(
+            String identifier, String actionId, String? replyText)
         onNotificationAction,
     required void Function(String identifier) onNotificationDismissed,
     required void Function() onSystemSleep,

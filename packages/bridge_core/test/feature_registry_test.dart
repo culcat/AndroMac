@@ -58,19 +58,23 @@ void main() {
   group('FeatureRegistry', () {
     test('registers features and advertises capabilities', () {
       final registry = FeatureRegistry();
-      final clip = FakeFeature(id: 'clipboard', incomingTypes: {'clipboard.update'});
-      final notif = FakeFeature(id: 'notifications', incomingTypes: {'notif.posted'});
+      final clip =
+          FakeFeature(id: 'clipboard', incomingTypes: {'clipboard.update'});
+      final notif =
+          FakeFeature(id: 'notifications', incomingTypes: {'notif.posted'});
 
       registry.register(clip);
       registry.register(notif);
 
-      expect(registry.supportedCapabilities, containsAll(['clipboard', 'notifications']));
+      expect(registry.supportedCapabilities,
+          containsAll(['clipboard', 'notifications']));
       expect(() => registry.register(clip), throwsArgumentError);
     });
 
     test('activates only agreed capabilities', () async {
       final registry = FeatureRegistry();
-      final clip = FakeFeature(id: 'clipboard', incomingTypes: {'clipboard.update'});
+      final clip =
+          FakeFeature(id: 'clipboard', incomingTypes: {'clipboard.update'});
       final sms = FakeFeature(id: 'sms', incomingTypes: {'sms.received'});
 
       registry.register(clip);
@@ -93,7 +97,8 @@ void main() {
 
     test('routes messages only to subscribed active features', () async {
       final registry = FeatureRegistry();
-      final clip = FakeFeature(id: 'clipboard', incomingTypes: {'clipboard.update'});
+      final clip =
+          FakeFeature(id: 'clipboard', incomingTypes: {'clipboard.update'});
       final sms = FakeFeature(id: 'sms', incomingTypes: {'sms.received'});
 
       registry.register(clip);

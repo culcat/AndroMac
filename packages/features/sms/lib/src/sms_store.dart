@@ -3,7 +3,8 @@ import 'package:bridge_core/bridge_core.dart';
 /// In-memory storage and conversation aggregator for SMS threads and messages.
 class SmsStore {
   final Map<String, SmsThreadItem> _threads = <String, SmsThreadItem>{};
-  final Map<String, List<SmsMessageItem>> _messagesByThread = <String, List<SmsMessageItem>>{};
+  final Map<String, List<SmsMessageItem>> _messagesByThread =
+      <String, List<SmsMessageItem>>{};
 
   /// Read-only list of conversation threads sorted by most recent message.
   List<SmsThreadItem> get threads {
@@ -22,16 +23,27 @@ class SmsStore {
     return List.unmodifiable(list);
   }
 
+  /// Finds an individual message across all threads by its ID.
+  SmsMessageItem? getMessage(String messageId) {
+    for (final threadMessages in _messagesByThread.values) {
+      final index = threadMessages.indexWhere((m) => m.id == messageId);
+      if (index != -1) return threadMessages[index];
+    }
+    return null;
+  }
+
   /// Inserts a new message and updates the parent thread summary.
   void addMessage(SmsMessageItem message, {String? contactName}) {
-    final threadList = _messagesByThread.putIfAbsent(message.threadId, () => <SmsMessageItem>[]);
+    final threadList = _messagesByThread.putIfAbsent(
+        message.threadId, () => <SmsMessageItem>[]);
     // Deduplicate by message ID
     threadList.removeWhere((m) => m.id == message.id);
     threadList.add(message);
     threadList.sort((a, b) => a.timestamp.compareTo(b.timestamp));
 
     final existingThread = _threads[message.threadId];
-    final unread = (existingThread?.unreadCount ?? 0) + (message.isOutgoing ? 0 : 1);
+    final unread =
+        (existingThread?.unreadCount ?? 0) + (message.isOutgoing ? 0 : 1);
 
     _threads[message.threadId] = SmsThreadItem(
       threadId: message.threadId,

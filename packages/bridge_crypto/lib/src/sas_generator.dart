@@ -5,10 +5,38 @@ import 'crypto_utils.dart';
 class SasGenerator {
   /// Curated list of distinct, recognizable emojis for visual SAS comparison.
   static const List<String> emojiPalette = [
-    '🐶', '🐱', '🦊', '🐻', '🐼', '🐨', '🦁', '🐯',
-    '🍎', '🍓', '🍒', '🍉', '🍕', '🚀', '⭐', '🎈',
-    '🎸', '⚡', '🔥', '🌊', '💎', '🔑', '🍀', '🔔',
-    '☕', '👑', '⚓', '🚲', '✈️', '⛵', '🏀', '⚽'
+    '🐶',
+    '🐱',
+    '🦊',
+    '🐻',
+    '🐼',
+    '🐨',
+    '🦁',
+    '🐯',
+    '🍎',
+    '🍓',
+    '🍒',
+    '🍉',
+    '🍕',
+    '🚀',
+    '⭐',
+    '🎈',
+    '🎸',
+    '⚡',
+    '🔥',
+    '🌊',
+    '💎',
+    '🔑',
+    '🍀',
+    '🔔',
+    '☕',
+    '👑',
+    '⚓',
+    '🚲',
+    '✈️',
+    '⛵',
+    '🏀',
+    '⚽'
   ];
 
   /// Computes SAS from client and server certificate fingerprints and the temporary pairing code.
@@ -30,9 +58,16 @@ class SasGenerator {
     final combined = '$first:$second:$pairingCode';
     final hash = CryptoUtils.sha256String(combined);
 
+    final emojiList = <String>[];
+    for (var i = 0; i < 4; i++) {
+      final idx = hash[4 + i] % emojiPalette.length;
+      emojiList.add(emojiPalette[idx]);
+    }
+
     return SasResult(
       numericCode: _deriveNumeric(hash),
-      emojiCode: _deriveEmojis(hash),
+      emojiCode: emojiList.join(),
+      emojiList: emojiList,
     );
   }
 
@@ -44,16 +79,6 @@ class SasGenerator {
     final str = num.toString().padLeft(6, '0');
     return '${str.substring(0, 3)}-${str.substring(3)}';
   }
-
-  /// Derives 4 distinct emojis from the hash bytes.
-  static String _deriveEmojis(Uint8List hash) {
-    final buffer = StringBuffer();
-    for (var i = 0; i < 4; i++) {
-      final idx = hash[4 + i] % emojiPalette.length;
-      buffer.write(emojiPalette[idx]);
-    }
-    return buffer.toString();
-  }
 }
 
 /// Verification string result containing numeric and visual emoji codes.
@@ -64,9 +89,13 @@ class SasResult {
   /// Visual code formatted as 4 emojis.
   final String emojiCode;
 
+  /// List of individual emojis.
+  final List<String> emojiList;
+
   const SasResult({
     required this.numericCode,
     required this.emojiCode,
+    this.emojiList = const <String>[],
   });
 
   @override

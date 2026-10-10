@@ -150,6 +150,39 @@ class NotificationsFeature implements BridgeFeature {
     return true;
   }
 
+  /// Dispatches a local Android notification across to Mac.
+  void postNotification(NotificationItem item) {
+    if (filter.shouldFilter(item.packageName, isOngoing: false)) return;
+
+    store.addOrUpdate(item);
+    _notificationStream.add(item);
+
+    if (_context != null && _context!.isConnected) {
+      final envelope = Envelope.create(
+        type: NotificationPostedPayload.messageTypePosted,
+        payload: NotificationPostedPayload(
+          key: item.key,
+          packageName: item.packageName,
+          appName: item.appName,
+          title: item.title,
+          text: item.text,
+          postTime: item.postedAt.millisecondsSinceEpoch,
+          canReply: item.canReply,
+          actions: item.actions
+              .map(
+                (a) => NotificationAction(
+                  actionId: a.actionId,
+                  title: a.title,
+                  isQuickReply: a.isQuickReply,
+                ),
+              )
+              .toList(),
+        ).toMap(),
+      );
+      _context!.send(envelope);
+    }
+  }
+
   void dispose() {
     _notificationStream.close();
     _dismissStream.close();

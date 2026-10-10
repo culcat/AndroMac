@@ -11,12 +11,16 @@ void main() {
       final digest = CryptoUtils.sha256(input);
       final hex = CryptoUtils.toHex(digest);
 
-      expect(hex, equals('b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9'));
+      expect(
+          hex,
+          equals(
+              'b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9'));
     });
 
     test('CertificateFingerprint computes and normalizes fingerprints', () {
       final certBytes = Uint8List.fromList([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-      final fpWithColons = CertificateFingerprint.compute(certBytes, colons: true);
+      final fpWithColons =
+          CertificateFingerprint.compute(certBytes, colons: true);
       expect(fpWithColons, contains(':'));
 
       final normalized = CertificateFingerprint.normalize(fpWithColons);

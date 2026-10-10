@@ -4,7 +4,8 @@ import 'package:andromac_desktop/desktop_app.dart';
 
 void main() {
   group('DesktopMainWindowViewConfig', () {
-    test('computes tab labels, notification badges, and unread SMS counters', () {
+    test('computes tab labels, notification badges, and unread SMS counters',
+        () {
       final diagnostics = DiagnosticsChecklistConfig(items: const [
         DiagnosticsItemConfig(
           id: 'lan',
@@ -70,7 +71,7 @@ void main() {
 
       // Verify window title formatting
       expect(view.windowTitle, contains('Pixel 8 Pro'));
-      expect(view.windowTitle, contains('91% ⚡'));
+      expect(view.windowTitle, contains('⚡ 91%'));
 
       // Verify peer status card derivation
       expect(view.peerStatusCard.deviceName, equals('Pixel 8 Pro'));

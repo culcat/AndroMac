@@ -24,7 +24,8 @@ class ReconnectStrategy {
   /// Computes the next backoff duration and increments attempt counter.
   Duration nextDelay() {
     final currentMultiplier = pow(multiplier, _attempts).toDouble();
-    final calculatedMs = (initialDelay.inMilliseconds * currentMultiplier).clamp(
+    final calculatedMs =
+        (initialDelay.inMilliseconds * currentMultiplier).clamp(
       initialDelay.inMilliseconds.toDouble(),
       maxDelay.inMilliseconds.toDouble(),
     );

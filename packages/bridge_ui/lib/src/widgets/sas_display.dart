@@ -11,7 +11,8 @@ class SasDisplayCard {
   const SasDisplayCard({
     required this.formattedNumeric,
     required this.emojiCode,
-    this.instruction = 'Verify that both devices show identical code and emojis',
+    this.instruction =
+        'Verify that both devices show identical code and emojis',
   });
 
   factory SasDisplayCard.fromSasResult(

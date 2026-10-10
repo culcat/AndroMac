@@ -93,7 +93,8 @@ void main() {
 
       expect(payload.accepted, isTrue);
       expect(payload.deviceId, equals('phone-pixel-001'));
-      expect(payload.agreedCapabilities, equals(['clipboard', 'notifications', 'sms']));
+      expect(payload.agreedCapabilities,
+          equals(['clipboard', 'notifications', 'sms']));
     });
 
     test('clipboard.update payload golden contract', () {
@@ -113,7 +114,10 @@ void main() {
       expect(payload.content, equals('Secret recovery phrase or URL'));
       expect(payload.mimeType, equals('text/plain'));
       expect(payload.originDeviceId, equals('phone-pixel-001'));
-      expect(payload.hash, equals('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'));
+      expect(
+          payload.hash,
+          equals(
+              'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'));
       expect(payload.seq, equals(142));
     });
 

@@ -103,7 +103,8 @@ class RemoteControlFeature implements BridgeFeature {
   }
 
   /// Sends setup negotiation parameters with desired streaming quality.
-  bool requestSetup({RemoteControlProfile profile = const RemoteControlProfile()}) {
+  bool requestSetup(
+      {RemoteControlProfile profile = const RemoteControlProfile()}) {
     if (_context == null || !_context!.isConnected) return false;
 
     final envelope = Envelope.create(

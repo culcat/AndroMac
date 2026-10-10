@@ -34,7 +34,8 @@ class MockTransportChannel implements TransportChannel {
 
 void main() {
   group('DesktopAppController Orchestration', () {
-    test('handles peer connection, executes handshake, and updates tray', () async {
+    test('handles peer connection, executes handshake, and updates tray',
+        () async {
       final mockPlatform = MockMacOsPlatform();
       final controller = DesktopAppController(
         deviceName: 'Alex MacBook',
@@ -62,7 +63,13 @@ void main() {
           platform: 'android',
           appVersion: '1.0.0',
           protocolVersion: 1,
-          capabilities: ['clipboard', 'notifications', 'sms', 'device_status', 'otp'],
+          capabilities: [
+            'clipboard',
+            'notifications',
+            'sms',
+            'device_status',
+            'otp'
+          ],
         ).toMap(),
       );
 
@@ -74,9 +81,11 @@ void main() {
       expect(ackSent.type, equals(HelloAckPayload.messageType));
 
       expect(controller.isConnected, isTrue);
-      expect(controller.connectionStatus.state, equals(ConnectionState.connected));
+      expect(
+          controller.connectionStatus.state, equals(ConnectionState.connected));
       expect(mockPlatform.trayStatusHistory.last['isConnected'], isTrue);
-      expect(mockPlatform.trayStatusHistory.last['tooltip'], contains('Pixel 8'));
+      expect(
+          mockPlatform.trayStatusHistory.last['tooltip'], contains('Pixel 8'));
     });
 
     test('receives battery status and updates tray badge', () async {
@@ -84,6 +93,26 @@ void main() {
       final controller = DesktopAppController(platform: mockPlatform);
       final channel = MockTransportChannel();
       await controller.handleConnection(channel);
+
+      // Deliver phone hello to establish active features
+      channel.pushMessage(Envelope.create(
+        type: HelloPayload.messageType,
+        payload: const HelloPayload(
+          deviceId: 'phone-pixel-8',
+          name: 'Pixel 8',
+          platform: 'android',
+          appVersion: '1.0.0',
+          protocolVersion: 1,
+          capabilities: [
+            'clipboard',
+            'notifications',
+            'sms',
+            'device_status',
+            'otp'
+          ],
+        ).toMap(),
+      ));
+      await Future<void>.delayed(const Duration(milliseconds: 20));
 
       final batteryEnvelope = Envelope.create(
         type: DeviceStatusPayload.messageType,
@@ -97,15 +126,31 @@ void main() {
       channel.pushMessage(batteryEnvelope);
       await Future<void>.delayed(const Duration(milliseconds: 20));
 
-      expect(mockPlatform.trayStatusHistory.last['batteryBadge'], equals('94%'));
-      expect(mockPlatform.trayStatusHistory.last['tooltip'], contains('94% (wifi)'));
+      expect(
+          mockPlatform.trayStatusHistory.last['batteryBadge'], equals('94%'));
+      expect(mockPlatform.trayStatusHistory.last['tooltip'],
+          contains('94% (wifi)'));
     });
 
-    test('mirrors incoming notification to native macOS notification system', () async {
+    test('mirrors incoming notification to native macOS notification system',
+        () async {
       final mockPlatform = MockMacOsPlatform();
       final controller = DesktopAppController(platform: mockPlatform);
       final channel = MockTransportChannel();
       await controller.handleConnection(channel);
+
+      channel.pushMessage(Envelope.create(
+        type: HelloPayload.messageType,
+        payload: const HelloPayload(
+          deviceId: 'phone-pixel-8',
+          name: 'Pixel 8',
+          platform: 'android',
+          appVersion: '1.0.0',
+          protocolVersion: 1,
+          capabilities: ['notifications'],
+        ).toMap(),
+      ));
+      await Future<void>.delayed(const Duration(milliseconds: 20));
 
       final notifEnvelope = Envelope.create(
         type: NotificationPostedPayload.messageTypePosted,
@@ -131,11 +176,25 @@ void main() {
       expect(displayed['canReply'], isTrue);
     });
 
-    test('extracts OTP code from SMS, copies to pasteboard, and triggers alert', () async {
+    test('extracts OTP code from SMS, copies to pasteboard, and triggers alert',
+        () async {
       final mockPlatform = MockMacOsPlatform();
       final controller = DesktopAppController(platform: mockPlatform);
       final channel = MockTransportChannel();
       await controller.handleConnection(channel);
+
+      channel.pushMessage(Envelope.create(
+        type: HelloPayload.messageType,
+        payload: const HelloPayload(
+          deviceId: 'phone-pixel-8',
+          name: 'Pixel 8',
+          platform: 'android',
+          appVersion: '1.0.0',
+          protocolVersion: 1,
+          capabilities: ['sms', 'otp'],
+        ).toMap(),
+      ));
+      await Future<void>.delayed(const Duration(milliseconds: 20));
 
       final smsEnvelope = Envelope.create(
         type: SmsReceivedPayload.messageType,
@@ -173,7 +232,8 @@ void main() {
       await controller.disconnect();
 
       expect(controller.isConnected, isFalse);
-      expect(controller.connectionStatus.state, equals(ConnectionState.disconnected));
+      expect(controller.connectionStatus.state,
+          equals(ConnectionState.disconnected));
       expect(mockPlatform.trayStatusHistory.last['isConnected'], isFalse);
     });
   });

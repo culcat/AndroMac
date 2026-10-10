@@ -10,13 +10,23 @@ class BatteryIndicatorConfig {
   final String icon;
   final String label;
 
-  const BatteryIndicatorConfig({
+  const BatteryIndicatorConfig.raw({
     required this.level,
     required this.isCharging,
     required this.color,
     required this.icon,
     required this.label,
   });
+
+  factory BatteryIndicatorConfig({
+    required int batteryLevel,
+    bool isCharging = false,
+  }) =>
+      BatteryIndicatorConfig.resolve(
+          level: batteryLevel, isCharging: isCharging);
+
+  int get batteryLevel => level;
+  String get displayLabel => label;
 
   factory BatteryIndicatorConfig.resolve({
     required int level,
@@ -41,7 +51,7 @@ class BatteryIndicatorConfig {
 
     final label = isCharging ? '⚡ $clampedLevel%' : '$clampedLevel%';
 
-    return BatteryIndicatorConfig(
+    return BatteryIndicatorConfig.raw(
       level: clampedLevel,
       isCharging: isCharging,
       color: color,
@@ -51,5 +61,6 @@ class BatteryIndicatorConfig {
   }
 
   @override
-  String toString() => 'BatteryIndicatorConfig(level: $level%, charging: $isCharging, label: $label)';
+  String toString() =>
+      'BatteryIndicatorConfig(level: $level%, charging: $isCharging, label: $label)';
 }

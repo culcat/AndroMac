@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-import 'package:meta/meta.dart';
 import 'crypto_utils.dart';
 
 /// Utilities for calculating, normalizing, and verifying X.509 certificate fingerprints.
@@ -53,7 +52,8 @@ class CertificatePinStore {
   bool verifyCertificate(String deviceId, Uint8List derBytes) {
     final pinned = _pins[deviceId];
     if (pinned == null) {
-      throw CertificatePinException('No pinned certificate found for device: $deviceId');
+      throw CertificatePinException(
+          'No pinned certificate found for device: $deviceId');
     }
 
     final computed = CertificateFingerprint.normalize(

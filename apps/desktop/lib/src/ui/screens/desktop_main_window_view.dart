@@ -119,7 +119,7 @@ class DesktopMainWindowViewConfig {
     String? selectedThreadId,
     List<ClipboardTileConfig>? clipboardHistory,
     List<FileTransferCardConfig>? fileTransfers,
-    DiagnosticsChecklistConfig>? diagnostics,
+    DiagnosticsChecklistConfig? diagnostics,
     BridgeLocale? currentLocale,
   }) {
     return DesktopMainWindowViewConfig(

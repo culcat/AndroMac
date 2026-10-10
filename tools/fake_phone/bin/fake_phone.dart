@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:bridge_transport/bridge_transport.dart';
 import 'package:fake_phone/fake_phone.dart';
 

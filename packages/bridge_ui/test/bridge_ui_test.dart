@@ -46,7 +46,8 @@ void main() {
 
     test('BatteryIndicatorConfig formats level and charging state', () {
       // Normal battery
-      final normal = BatteryIndicatorConfig.resolve(level: 75, isCharging: false);
+      final normal =
+          BatteryIndicatorConfig.resolve(level: 75, isCharging: false);
       expect(normal.label, equals('75%'));
       expect(normal.color, equals(BridgeColors.success));
       expect(normal.icon, equals('🔋'));
@@ -58,13 +59,15 @@ void main() {
       expect(low.icon, equals('🪫'));
 
       // Charging
-      final charging = BatteryIndicatorConfig.resolve(level: 40, isCharging: true);
+      final charging =
+          BatteryIndicatorConfig.resolve(level: 40, isCharging: true);
       expect(charging.label, equals('⚡ 40%'));
       expect(charging.icon, equals('⚡'));
       expect(charging.color, equals(BridgeColors.success));
 
       // Clamping test
-      final clamped = BatteryIndicatorConfig.resolve(level: 150, isCharging: false);
+      final clamped =
+          BatteryIndicatorConfig.resolve(level: 150, isCharging: false);
       expect(clamped.level, equals(100));
     });
 

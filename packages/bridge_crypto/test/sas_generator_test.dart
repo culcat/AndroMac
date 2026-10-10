@@ -22,9 +22,10 @@ void main() {
 
       expect(sas1.numericCode, equals(sas2.numericCode));
       expect(sas1.emojiCode, equals(sas2.emojiCode));
-      expect(sas1.numericCode.length, equals(7)); // format: XXX-XXX (6 digits + hyphen)
+      expect(sas1.numericCode.length,
+          equals(7)); // format: XXX-XXX (6 digits + hyphen)
       expect(sas1.numericCode, contains('-'));
-      expect(sas1.emojiCode.characters.length, equals(4)); // 4 visual emojis
+      expect(sas1.emojiList.length, equals(4)); // 4 visual emojis
     });
 
     test('changes SAS code when pairing code differs', () {

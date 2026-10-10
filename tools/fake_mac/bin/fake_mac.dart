@@ -14,7 +14,8 @@ void main(List<String> args) async {
   }
 
   final controller = FakeMacController();
-  print('Starting Fake Mac Controller [${controller.name}] (ID: ${controller.deviceId})...');
+  print(
+      'Starting Fake Mac Controller [${controller.name}] (ID: ${controller.deviceId})...');
   print('Listening for Android connections on port $port...');
 
   await controller.startServer(port: port);
@@ -23,13 +24,15 @@ void main(List<String> args) async {
     print('<- [Phone Event] Type: ${envelope.type} (id: ${envelope.id})');
     if (envelope.type == 'device.status') {
       final p = envelope.payload;
-      print('   Battery: ${p['batteryLevel']}%, Charging: ${p['isCharging']}, Net: ${p['networkType']}');
+      print(
+          '   Battery: ${p['batteryLevel']}%, Charging: ${p['isCharging']}, Net: ${p['networkType']}');
     } else if (envelope.type == 'sms.received') {
       final p = envelope.payload;
       print('   Incoming SMS from ${p['address']}: "${p['body']}"');
     } else if (envelope.type == 'notif.posted') {
       final p = envelope.payload;
-      print('   Notification from ${p['appName']}: [${p['title']}] "${p['text']}"');
+      print(
+          '   Notification from ${p['appName']}: [${p['title']}] "${p['text']}"');
     } else if (envelope.type == 'clipboard.update') {
       final p = envelope.payload;
       print('   Clipboard update: "${p['data']}"');

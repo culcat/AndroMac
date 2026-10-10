@@ -4,7 +4,6 @@ import 'package:bridge_crypto/bridge_crypto.dart';
 import 'package:bridge_transport/bridge_transport.dart';
 import 'package:bridge_core/bridge_core.dart';
 import 'package:bridge_platform/bridge_platform.dart';
-import 'package:bridge_ui/bridge_ui.dart';
 import 'package:clipboard_feature/clipboard_feature.dart';
 import 'package:notifications_feature/notifications_feature.dart';
 import 'package:sms_feature/sms_feature.dart';
@@ -44,7 +43,8 @@ class DesktopAppController {
     this.deviceName = 'MacBook Pro',
     int port = 8765,
     MacOsBridgePlatform? platform,
-  })  : localDeviceId = localDeviceId ?? 'mac-${CryptoUtils.generateNumericOtp(6)}',
+  })  : localDeviceId =
+            localDeviceId ?? 'mac-${CryptoUtils.generateNumericOtp(6)}',
         server = BridgeServer(port: port),
         platform = platform ?? MacOsBridgePlatform.instance {
     _initializeFeatures();
@@ -117,7 +117,8 @@ class DesktopAppController {
     platform.registerCallbacks(
       onNotificationAction: (identifier, actionId, replyText) {
         if (replyText != null) {
-          notifications.replyToNotification(identifier, replyText, actionId: actionId);
+          notifications.replyToNotification(identifier, replyText,
+              actionId: actionId);
         }
       },
       onNotificationDismissed: (identifier) {

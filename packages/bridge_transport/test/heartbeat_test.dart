@@ -41,7 +41,8 @@ void main() {
 
       final pongEnvelope = Envelope.create(
         type: PongPayload.messageType,
-        payload: const PongPayload(timestamp: 1015, receivedTimestamp: 1000).toMap(),
+        payload:
+            const PongPayload(timestamp: 1015, receivedTimestamp: 1000).toMap(),
       );
 
       final result = manager.handleIncomingEnvelope(pongEnvelope);

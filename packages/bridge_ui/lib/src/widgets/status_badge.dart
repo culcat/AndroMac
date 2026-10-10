@@ -14,34 +14,35 @@ class StatusBadgeConfig {
     this.dotSymbol = '●',
   });
 
-  factory StatusBadgeConfig.connected([String label = 'Connected']) {
+  factory StatusBadgeConfig.connected({String? label, String? customLabel}) {
     return StatusBadgeConfig(
-      label: label,
+      label: customLabel ?? label ?? 'Connected',
       color: BridgeColors.success,
     );
   }
 
-  factory StatusBadgeConfig.reconnecting([String label = 'Reconnecting']) {
+  factory StatusBadgeConfig.reconnecting({String? label, String? customLabel}) {
     return StatusBadgeConfig(
-      label: label,
+      label: customLabel ?? label ?? 'Reconnecting',
       color: BridgeColors.warning,
     );
   }
 
-  factory StatusBadgeConfig.disconnected([String label = 'Disconnected']) {
+  factory StatusBadgeConfig.disconnected({String? label, String? customLabel}) {
     return StatusBadgeConfig(
-      label: label,
+      label: customLabel ?? label ?? 'Disconnected',
       color: BridgeColors.textSecondaryLight,
     );
   }
 
-  factory StatusBadgeConfig.error([String label = 'Error']) {
+  factory StatusBadgeConfig.error({String? label, String? customLabel}) {
     return StatusBadgeConfig(
-      label: label,
+      label: customLabel ?? label ?? 'Error',
       color: BridgeColors.error,
     );
   }
 
   @override
-  String toString() => 'StatusBadgeConfig(label: $label, color: 0x${color.toRadixString(16)})';
+  String toString() =>
+      'StatusBadgeConfig(label: $label, color: 0x${color.toRadixString(16)})';
 }

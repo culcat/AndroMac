@@ -62,7 +62,8 @@ class Envelope {
       throw FormatException('Missing or invalid "id" field in envelope: $json');
     }
     if (!json.containsKey('type') || json['type'] is! String) {
-      throw FormatException('Missing or invalid "type" field in envelope: $json');
+      throw FormatException(
+          'Missing or invalid "type" field in envelope: $json');
     }
     if (!json.containsKey('ts') || json['ts'] is! int) {
       throw FormatException('Missing or invalid "ts" field in envelope: $json');
@@ -145,7 +146,8 @@ class Envelope {
   int get hashCode => Object.hash(v, id, type, ts, ref);
 
   @override
-  String toString() => 'Envelope(v: $v, id: $id, type: $type, ts: $ts, ref: $ref)';
+  String toString() =>
+      'Envelope(v: $v, id: $id, type: $type, ts: $ts, ref: $ref)';
 
   /// Simple Crockford Base32-like ULID generator without external dependencies.
   static String generateUlid([int? timeMs]) {
@@ -162,7 +164,8 @@ class Envelope {
     }
 
     // 16 chars of randomness (80 bits)
-    final randChars = List<String>.generate(16, (_) => encoding[random.nextInt(32)]);
+    final randChars =
+        List<String>.generate(16, (_) => encoding[random.nextInt(32)]);
 
     return '${timeChars.join()}${randChars.join()}';
   }

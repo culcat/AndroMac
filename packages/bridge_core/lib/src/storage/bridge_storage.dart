@@ -34,8 +34,10 @@ abstract class BridgeStorage {
 /// for unit testing, fast lookups, and headless CLI emulators.
 class MemoryEncryptedStorage implements BridgeStorage {
   final Map<String, SmsRecord> _smsMessages = <String, SmsRecord>{};
-  final Map<String, NotificationRecord> _notifications = <String, NotificationRecord>{};
-  final Map<String, ClipboardRecord> _clipboardItems = <String, ClipboardRecord>{};
+  final Map<String, NotificationRecord> _notifications =
+      <String, NotificationRecord>{};
+  final Map<String, ClipboardRecord> _clipboardItems =
+      <String, ClipboardRecord>{};
   final Map<String, DeviceRecord> _devices = <String, DeviceRecord>{};
 
   // --- SMS ---
@@ -47,14 +49,17 @@ class MemoryEncryptedStorage implements BridgeStorage {
 
   @override
   Future<List<SmsRecord>> getSmsByThread(String threadId) async {
-    final list = _smsMessages.values.where((s) => s.threadId == threadId).toList()
+    final list = _smsMessages.values
+        .where((s) => s.threadId == threadId)
+        .toList()
       ..sort((a, b) => a.timestamp.compareTo(b.timestamp));
     return list;
   }
 
   @override
   Future<List<String>> getAllThreadIds() async {
-    final threadIds = _smsMessages.values.map((s) => s.threadId).toSet().toList();
+    final threadIds =
+        _smsMessages.values.map((s) => s.threadId).toSet().toList();
     return threadIds;
   }
 
@@ -178,7 +183,8 @@ class MemoryEncryptedStorage implements BridgeStorage {
 
   @override
   Future<List<DeviceRecord>> getAllDevices() async {
-    return _devices.values.toList()..sort((a, b) => b.lastSeen.compareTo(a.lastSeen));
+    return _devices.values.toList()
+      ..sort((a, b) => b.lastSeen.compareTo(a.lastSeen));
   }
 
   @override

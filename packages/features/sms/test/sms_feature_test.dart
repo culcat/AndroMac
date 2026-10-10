@@ -30,7 +30,8 @@ class MockTransportChannel implements TransportChannel {
 
 void main() {
   group('SmsFeature', () {
-    test('sendSms dispatches sms.send envelope and records pending message', () async {
+    test('sendSms dispatches sms.send envelope and records pending message',
+        () async {
       final feature = SmsFeature();
       final channel = MockTransportChannel();
       final context = FeatureContext(peerDeviceId: 'phone-1', channel: channel);
@@ -85,7 +86,9 @@ void main() {
       expect(thread.lastMessage?.status, equals(SmsDeliveryStatus.delivered));
     });
 
-    test('receiving sms.received adds incoming message to store and emits to stream', () async {
+    test(
+        'receiving sms.received adds incoming message to store and emits to stream',
+        () async {
       final feature = SmsFeature();
       final channel = MockTransportChannel();
       final context = FeatureContext(peerDeviceId: 'phone-1', channel: channel);
@@ -107,6 +110,7 @@ void main() {
       );
 
       feature.onMessage(incomingEnvelope);
+      await Future<void>.delayed(Duration.zero);
 
       expect(receivedEvents.length, equals(1));
       expect(receivedEvents.first.address, equals('+15559998877'));
@@ -114,7 +118,9 @@ void main() {
       expect(feature.store.threadCount, equals(1));
     });
 
-    test('receiving sms.send triggers onSendRequested callback on Android provider', () async {
+    test(
+        'receiving sms.send triggers onSendRequested callback on Android provider',
+        () async {
       SmsSendPayload? capturedPayload;
       String? capturedMessageId;
 

@@ -31,10 +31,12 @@ class MockChannel implements TransportChannel {
 
 void main() {
   group('ClipboardFeature', () {
-    test('syncOutbound sends envelope and prevents duplicate transmissions', () async {
+    test('syncOutbound sends envelope and prevents duplicate transmissions',
+        () async {
       final feature = ClipboardFeature(localDeviceId: 'mac-host');
       final channel = MockChannel();
-      final context = FeatureContext(peerDeviceId: 'phone-peer', channel: channel);
+      final context =
+          FeatureContext(peerDeviceId: 'phone-peer', channel: channel);
 
       await feature.start(context);
 
@@ -55,17 +57,20 @@ void main() {
       expect(channel.sent.length, equals(1));
     });
 
-    test('onMessage processes peer updates and suppresses loopback echoes', () async {
+    test('onMessage processes peer updates and suppresses loopback echoes',
+        () async {
       final feature = ClipboardFeature(localDeviceId: 'mac-host');
       final channel = MockChannel();
-      final context = FeatureContext(peerDeviceId: 'phone-peer', channel: channel);
+      final context =
+          FeatureContext(peerDeviceId: 'phone-peer', channel: channel);
 
       await feature.start(context);
 
       final events = <ClipboardItem>[];
       feature.onClipboardChanged.listen(events.add);
 
-      final hash = CryptoUtils.toHex(CryptoUtils.sha256String('Phone copied text'));
+      final hash =
+          CryptoUtils.toHex(CryptoUtils.sha256String('Phone copied text'));
       final incomingEnvelope = Envelope.create(
         type: ClipboardPayload.messageType,
         payload: ClipboardPayload(
@@ -78,6 +83,7 @@ void main() {
       );
 
       feature.onMessage(incomingEnvelope);
+      await Future<void>.delayed(Duration.zero);
 
       expect(events.length, equals(1));
       expect(events.first.content, equals('Phone copied text'));

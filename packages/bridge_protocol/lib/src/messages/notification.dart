@@ -36,7 +36,8 @@ class NotificationPostedPayload {
       postTime: map['postTime'] as int? ?? 0,
       canReply: map['canReply'] as bool? ?? false,
       actions: (map['actions'] as List<dynamic>?)
-              ?.map((e) => NotificationAction.fromMap(e as Map<String, dynamic>))
+              ?.map(
+                  (e) => NotificationAction.fromMap(e as Map<String, dynamic>))
               .toList() ??
           const <NotificationAction>[],
     );

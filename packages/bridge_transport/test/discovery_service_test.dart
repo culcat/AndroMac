@@ -32,7 +32,8 @@ void main() {
       expect(fromTxt.fingerprint, equals(info.fingerprint));
     });
 
-    test('InMemoryDiscoveryService broadcasts and receives simulated peers', () async {
+    test('InMemoryDiscoveryService broadcasts and receives simulated peers',
+        () async {
       final service = InMemoryDiscoveryService();
       final peer = BridgeServiceInfo(
         deviceId: 'phone-202',

@@ -87,7 +87,8 @@ class NotificationRecord {
         'isDismissed': isDismissed,
       };
 
-  factory NotificationRecord.fromMap(Map<String, dynamic> map) => NotificationRecord(
+  factory NotificationRecord.fromMap(Map<String, dynamic> map) =>
+      NotificationRecord(
         key: map['key'] as String,
         packageName: map['packageName'] as String,
         appName: map['appName'] as String,

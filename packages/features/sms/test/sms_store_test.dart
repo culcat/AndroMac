@@ -4,7 +4,8 @@ import 'package:sms_feature/sms_feature.dart';
 
 void main() {
   group('SmsStore', () {
-    test('addMessage aggregates messages under threadId and updates summary', () {
+    test('addMessage aggregates messages under threadId and updates summary',
+        () {
       final store = SmsStore();
       final now = DateTime.now();
 
@@ -70,11 +71,14 @@ void main() {
       );
 
       store.addMessage(outgoingMsg);
-      expect(store.getMessages('thread-300').first.status, equals(SmsDeliveryStatus.pending));
+      expect(store.getMessages('thread-300').first.status,
+          equals(SmsDeliveryStatus.pending));
 
       store.updateMessageStatus('client-out-1', SmsDeliveryStatus.delivered);
-      expect(store.getMessages('thread-300').first.status, equals(SmsDeliveryStatus.delivered));
-      expect(store.threads.first.lastMessage?.status, equals(SmsDeliveryStatus.delivered));
+      expect(store.getMessages('thread-300').first.status,
+          equals(SmsDeliveryStatus.delivered));
+      expect(store.threads.first.lastMessage?.status,
+          equals(SmsDeliveryStatus.delivered));
     });
 
     test('search filters threads by name, address, or body', () {

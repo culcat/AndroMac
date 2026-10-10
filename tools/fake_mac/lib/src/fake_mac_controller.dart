@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:bridge_protocol/bridge_protocol.dart';
 import 'package:bridge_crypto/bridge_crypto.dart';
 import 'package:bridge_transport/bridge_transport.dart';
-import 'package:bridge_core/bridge_core.dart';
 
 /// Simulated macOS controller running in CLI to test Android provider integrations.
 class FakeMacController {
@@ -13,7 +12,8 @@ class FakeMacController {
 
   BridgeServer? _server;
   TransportChannel? _channel;
-  final StreamController<Envelope> _incomingEvents = StreamController<Envelope>.broadcast();
+  final StreamController<Envelope> _incomingEvents =
+      StreamController<Envelope>.broadcast();
   int _clipboardSeq = 0;
 
   FakeMacController({
@@ -23,7 +23,14 @@ class FakeMacController {
     List<String>? capabilities,
   })  : deviceId = deviceId ?? 'fake-mac-${CryptoUtils.generateNumericOtp(4)}',
         capabilities = capabilities ??
-            const ['clipboard', 'notifications', 'sms', 'device_status', 'otp', 'file_transfer'];
+            const [
+              'clipboard',
+              'notifications',
+              'sms',
+              'device_status',
+              'otp',
+              'file_transfer'
+            ];
 
   bool get isConnected => _channel?.isOpen ?? false;
   Stream<Envelope> get onEvent => _incomingEvents.stream;
@@ -86,7 +93,8 @@ class FakeMacController {
     // Auto-respond to 'hello' with 'hello.ack'
     if (envelope.type == HelloPayload.messageType) {
       final hello = HelloPayload.fromMap(envelope.payload);
-      final agreed = capabilities.where((c) => hello.capabilities.contains(c)).toList();
+      final agreed =
+          capabilities.where((c) => hello.capabilities.contains(c)).toList();
 
       final ack = Envelope.create(
         type: HelloAckPayload.messageType,
@@ -104,7 +112,8 @@ class FakeMacController {
   /// Sends an outbound SMS request to be dispatched through the phone.
   String? sendSms(String address, String body, {int simSlot = 0}) {
     if (!isConnected) return null;
-    final clientMessageId = 'fake-mac-sms-${DateTime.now().millisecondsSinceEpoch}';
+    final clientMessageId =
+        'fake-mac-sms-${DateTime.now().millisecondsSinceEpoch}';
 
     final envelope = Envelope.create(
       type: SmsSendPayload.messageType,

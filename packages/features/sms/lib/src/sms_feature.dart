@@ -145,6 +145,67 @@ class SmsFeature implements BridgeFeature {
     return clientMessageId;
   }
 
+  /// Handles local arrival of SMS on Android and mirrors to peer if connected.
+  void receiveSms({
+    required String messageId,
+    required String threadId,
+    required String address,
+    required String body,
+    required int timestamp,
+    int simSlot = 0,
+  }) {
+    final payload = SmsReceivedPayload(
+      messageId: messageId,
+      threadId: threadId,
+      address: address,
+      body: body,
+      timestamp: timestamp,
+      simSlot: simSlot,
+    );
+
+    final item = SmsMessageItem(
+      id: messageId,
+      threadId: threadId,
+      address: address,
+      body: body,
+      timestamp: DateTime.fromMillisecondsSinceEpoch(timestamp),
+      isOutgoing: false,
+      simSlot: simSlot,
+      status: SmsDeliveryStatus.delivered,
+    );
+
+    store.addMessage(item);
+    _messageReceivedController.add(item);
+
+    if (_context != null && _context!.isConnected) {
+      final envelope = Envelope.create(
+        type: SmsReceivedPayload.messageType,
+        payload: payload.toMap(),
+      );
+      _context!.send(envelope);
+    }
+  }
+
+  /// Confirms outbound SMS delivery status back to Mac.
+  void confirmDelivery({
+    required String clientMessageId,
+    required bool success,
+    String? errorMessage,
+  }) {
+    if (_context == null || !_context!.isConnected) return;
+
+    final envelope = Envelope.create(
+      type: SmsSentStatusPayload.messageType,
+      payload: SmsSentStatusPayload(
+        clientMessageId: clientMessageId,
+        success: success,
+        error: errorMessage,
+      ).toMap(),
+    );
+
+    _context!.send(envelope);
+  }
+
   void dispose() {
     _messageReceivedController.close();
     _statusController.close();

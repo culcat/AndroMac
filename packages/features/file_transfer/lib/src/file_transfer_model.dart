@@ -74,7 +74,8 @@ class FileTransferProgress {
     this.errorMessage,
   });
 
-  double get fraction => totalBytes > 0 ? (bytesTransferred / totalBytes).clamp(0.0, 1.0) : 0.0;
+  double get fraction =>
+      totalBytes > 0 ? (bytesTransferred / totalBytes).clamp(0.0, 1.0) : 0.0;
   int get percentage => (fraction * 100).round();
 
   @override

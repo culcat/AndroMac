@@ -83,8 +83,11 @@ class BridgePairingData {
 
   /// Deserializes from a map.
   factory BridgePairingData.fromMap(Map<String, dynamic> map) {
-    if (!map.containsKey('id') || !map.containsKey('fp') || !map.containsKey('code')) {
-      throw const FormatException('Missing required fields in BridgePairingData');
+    if (!map.containsKey('id') ||
+        !map.containsKey('fp') ||
+        !map.containsKey('code')) {
+      throw const FormatException(
+          'Missing required fields in BridgePairingData');
     }
 
     final rawIps = map['ips'];
@@ -113,7 +116,8 @@ class BridgePairingData {
     if (payload.startsWith('andromac://pair?data=')) {
       final b64 = payload.substring('andromac://pair?data='.length);
       final jsonStr = utf8.decode(base64Url.decode(b64));
-      return BridgePairingData.fromMap(jsonDecode(jsonStr) as Map<String, dynamic>);
+      return BridgePairingData.fromMap(
+          jsonDecode(jsonStr) as Map<String, dynamic>);
     }
 
     final decoded = jsonDecode(payload);

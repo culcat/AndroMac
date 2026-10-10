@@ -29,4 +29,4 @@ jobs:
         run: dart analyze --fatal-infos
 
       - name: Run Package Tests
-        run: dart test
+        run: dart test test/ $(find packages tools apps -name "*_test.dart")

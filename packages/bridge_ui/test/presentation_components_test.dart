@@ -17,7 +17,7 @@ void main() {
       expect(config.networkSymbol, contains('Wi-Fi'));
       expect(config.platformSymbol, contains('Android'));
       expect(config.summary, contains('Pixel 8 Pro'));
-      expect(config.summary, contains('85% ⚡'));
+      expect(config.summary, contains('⚡ 85%'));
     });
 
     test('handles disconnected device state', () {
@@ -44,7 +44,8 @@ void main() {
         packageName: 'org.telegram.messenger',
         appName: 'Telegram',
         title: 'Project Lead',
-        text: 'This is a very long notification body text that exceeds the snippet threshold for compact views',
+        text:
+            'This is a very long notification body text that exceeds the snippet threshold for compact views',
         postTime: now,
         canReply: true,
       );
@@ -58,7 +59,9 @@ void main() {
   });
 
   group('SmsConversationTileConfig & SmsMessageBubbleConfig', () {
-    test('derives contact initials and prioritizes contact name over phone number', () {
+    test(
+        'derives contact initials and prioritizes contact name over phone number',
+        () {
       final configWithName = SmsConversationTileConfig(
         threadId: 'th-1',
         contactName: 'Alexander Pushkin',
@@ -113,7 +116,8 @@ void main() {
   });
 
   group('ClipboardTileConfig', () {
-    test('computes character count, preview snippet, and origin device badge', () {
+    test('computes character count, preview snippet, and origin device badge',
+        () {
       final config = ClipboardTileConfig(
         id: 'clip-1',
         content: 'https://github.com/culcat/AndroMac\nLine 2',
@@ -122,7 +126,7 @@ void main() {
         timestamp: DateTime(2026, 10, 10, 15, 30).millisecondsSinceEpoch,
       );
 
-      expect(config.charCount, equals(42));
+      expect(config.charCount, equals(41));
       expect(config.originBadge, contains('macOS'));
       expect(config.pinSymbol, equals('📌'));
       expect(config.formattedTime, equals('15:30'));
@@ -138,7 +142,8 @@ void main() {
       expect(FileTransferCardConfig.formatBytes(1610612736), equals('1.50 GB'));
     });
 
-    test('calculates percentage, progress description, and finished states', () {
+    test('calculates percentage, progress description, and finished states',
+        () {
       final active = FileTransferCardConfig(
         transferId: 'tx-1',
         fileName: 'archive.zip',

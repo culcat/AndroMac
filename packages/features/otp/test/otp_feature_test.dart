@@ -30,7 +30,8 @@ class MockTransportChannel implements TransportChannel {
 
 void main() {
   group('OtpFeature', () {
-    test('extracts OTP from incoming SMS and triggers callback and stream', () async {
+    test('extracts OTP from incoming SMS and triggers callback and stream',
+        () async {
       OtpItem? callbackItem;
       final feature = OtpFeature(
         onOtpDetected: (item) => callbackItem = item,
@@ -55,6 +56,7 @@ void main() {
       );
 
       feature.onMessage(smsEnvelope);
+      await Future<void>.delayed(Duration.zero);
 
       expect(streamItems.length, equals(1));
       expect(streamItems.first.code, equals('748921'));
@@ -87,6 +89,7 @@ void main() {
       );
 
       feature.onMessage(notifEnvelope);
+      await Future<void>.delayed(Duration.zero);
 
       expect(streamItems.length, equals(1));
       expect(streamItems.first.code, equals('55441'));

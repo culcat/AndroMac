@@ -10,7 +10,9 @@ class ClipboardFeature implements BridgeFeature {
   final String id = 'clipboard';
 
   @override
-  final Set<String> incomingTypes = const <String>{ClipboardPayload.messageType};
+  final Set<String> incomingTypes = const <String>{
+    ClipboardPayload.messageType
+  };
 
   final String localDeviceId;
   final ClipboardHistoryStore history;

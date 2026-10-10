@@ -58,7 +58,8 @@ class MockAndroidPlatform extends AndroidBridgePlatform {
 
   @override
   void registerCallbacks({
-    required void Function(Map<String, dynamic> notification) onNotificationPosted,
+    required void Function(Map<String, dynamic> notification)
+        onNotificationPosted,
     required void Function(String key) onNotificationDismissed,
     required void Function(Map<String, dynamic> sms) onSmsReceived,
     required void Function(String text) onClipboardCaptured,
@@ -74,15 +75,20 @@ class MockAndroidPlatform extends AndroidBridgePlatform {
   // Simulation triggers for tests
   void simulateNotificationPosted(Map<String, dynamic> notif) =>
       _onNotificationPosted?.call(notif);
-  void simulateSmsReceived(Map<String, dynamic> sms) => _onSmsReceived?.call(sms);
-  void simulateClipboardCaptured(String text) => _onClipboardCaptured?.call(text);
+  void simulateNotificationDismissed(String key) =>
+      _onNotificationDismissed?.call(key);
+  void simulateSmsReceived(Map<String, dynamic> sms) =>
+      _onSmsReceived?.call(sms);
+  void simulateClipboardCaptured(String text) =>
+      _onClipboardCaptured?.call(text);
   void simulateBatteryChanged(int level, bool charging) =>
       _onBatteryChanged?.call(level, charging);
 }
 
 /// Testable in-memory mock implementation of [MacOsBridgePlatform].
 class MockMacOsPlatform extends MacOsBridgePlatform {
-  final List<Map<String, dynamic>> displayedNotifications = <Map<String, dynamic>>[];
+  final List<Map<String, dynamic>> displayedNotifications =
+      <Map<String, dynamic>>[];
   final List<String> removedNotificationIds = <String>[];
   final List<Map<String, dynamic>> trayStatusHistory = <Map<String, dynamic>>[];
   final List<String> pasteboardCopies = <String>[];
@@ -152,7 +158,8 @@ class MockMacOsPlatform extends MacOsBridgePlatform {
 
   @override
   void registerCallbacks({
-    required void Function(String identifier, String actionId, String? replyText)
+    required void Function(
+            String identifier, String actionId, String? replyText)
         onNotificationAction,
     required void Function(String identifier) onNotificationDismissed,
     required void Function() onSystemSleep,
@@ -169,7 +176,10 @@ class MockMacOsPlatform extends MacOsBridgePlatform {
   // Simulation triggers for tests
   void simulateNotificationAction(String id, String action, String? reply) =>
       _onNotificationAction?.call(id, action, reply);
+  void simulateNotificationDismissed(String identifier) =>
+      _onNotificationDismissed?.call(identifier);
   void simulateSleep() => _onSystemSleep?.call();
   void simulateWake() => _onSystemWake?.call();
-  void simulatePasteboardChange(String text) => _onPasteboardChanged?.call(text);
+  void simulatePasteboardChange(String text) =>
+      _onPasteboardChanged?.call(text);
 }

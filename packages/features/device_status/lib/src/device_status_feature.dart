@@ -25,7 +25,7 @@ class DeviceStatusFeature implements BridgeFeature {
   DeviceStatusState _currentStatus = DeviceStatusState.unknown();
 
   /// Provider-side callback invoked on Android when Mac triggers "Find My Phone".
-  void Function()? onRingRequested;
+  Function? onRingRequested;
 
   DeviceStatusFeature({this.onRingRequested});
 
@@ -64,8 +64,21 @@ class DeviceStatusFeature implements BridgeFeature {
       _currentStatus = newState;
       _statusController.add(newState);
     } else if (message.type == ringMessageType) {
+      final reason = message.payload['reason'] as String?;
       _ringTriggerController.add(null);
-      onRingRequested?.call();
+      if (onRingRequested != null) {
+        if (onRingRequested is void Function(String?)) {
+          (onRingRequested as void Function(String?))(reason);
+        } else if (onRingRequested is void Function()) {
+          (onRingRequested as void Function())();
+        } else {
+          try {
+            (onRingRequested as dynamic)(reason);
+          } catch (_) {
+            (onRingRequested as dynamic)();
+          }
+        }
+      }
     }
   }
 

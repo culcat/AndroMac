@@ -35,8 +35,10 @@ class FileTransferFeature implements BridgeFeature {
   final StreamController<Uint8List> _receivedFileController =
       StreamController<Uint8List>.broadcast();
 
-  final Map<String, IncomingTransferSession> _incomingSessions = <String, IncomingTransferSession>{};
-  final Map<String, OutgoingTransferSession> _outgoingSessions = <String, OutgoingTransferSession>{};
+  final Map<String, IncomingTransferSession> _incomingSessions =
+      <String, IncomingTransferSession>{};
+  final Map<String, OutgoingTransferSession> _outgoingSessions =
+      <String, OutgoingTransferSession>{};
 
   FeatureContext? _context;
 
@@ -195,7 +197,9 @@ class FileTransferFeature implements BridgeFeature {
         FileTransferProgress(
           transferId: session.offer.transferId,
           fileName: session.offer.fileName,
-          bytesTransferred: (transferred < session.fileBytes.length) ? transferred : session.fileBytes.length,
+          bytesTransferred: (transferred < session.fileBytes.length)
+              ? transferred
+              : session.fileBytes.length,
           totalBytes: session.fileBytes.length,
           state: FileTransferState.transferring,
         ),

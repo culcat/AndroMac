@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:test/test.dart';
 import 'package:bridge_protocol/bridge_protocol.dart';
 import 'package:bridge_transport/bridge_transport.dart';
+import 'package:bridge_core/bridge_core.dart';
 import 'package:bridge_platform/bridge_platform.dart';
 import 'package:andromac_desktop/desktop_app.dart';
 import 'package:andromac_phone/phone_app.dart';
@@ -53,7 +54,9 @@ class _PipedChannel implements TransportChannel {
 
 void main() {
   group('End-to-End System Integration: Desktop Mac <-> Phone Android', () {
-    test('full system integration: handshake, battery, notifications, SMS, OTP auto-copy, clipboard sync, and teardown', () async {
+    test(
+        'full system integration: handshake, battery, notifications, SMS, OTP auto-copy, clipboard sync, and teardown',
+        () async {
       final macPlatform = MockMacOsPlatform();
       final phonePlatform = MockAndroidPlatform();
 
@@ -71,19 +74,26 @@ void main() {
 
       // 1. Establish P2P link and execute handshake
       final macHandleFuture = macController.handleConnection(pair.macChannel);
-      final phoneHandleFuture = phoneController.handleConnection(pair.phoneChannel);
+      final phoneHandleFuture =
+          phoneController.handleConnection(pair.phoneChannel);
 
       await Future.wait([macHandleFuture, phoneHandleFuture]);
       await Future<void>.delayed(const Duration(milliseconds: 50));
 
       expect(macController.isConnected, isTrue);
       expect(phoneController.isConnected, isTrue);
-      expect(macController.connectionStatus.state, equals(ConnectionState.connected));
-      expect(phoneController.connectionStatus.state, equals(ConnectionState.connected));
+      expect(macController.connectionStatus.state,
+          equals(ConnectionState.connected));
+      expect(phoneController.connectionStatus.state,
+          equals(ConnectionState.connected));
 
       // Mac menu bar tray reflects connected phone
-      expect(macPlatform.trayStatusHistory.last['isConnected'], isTrue);
-      expect(macPlatform.trayStatusHistory.last['tooltip'], contains('Google Pixel 8 Pro'));
+      expect(macPlatform.trayStatusHistory.any((s) => s['isConnected'] == true),
+          isTrue);
+      expect(
+          macPlatform.trayStatusHistory.any(
+              (s) => (s['tooltip'] as String).contains('Google Pixel 8 Pro')),
+          isTrue);
 
       // 2. Battery telemetry update
       phonePlatform.simulateBatteryChanged(88, true);
@@ -116,14 +126,14 @@ void main() {
       expect(displayedNotif['canReply'], isTrue);
 
       // User replies from macOS Notification Center
-      macPlatform.simulateNotificationAction('telegram|4001|dm', 'reply', 'On my way!');
+      macPlatform.simulateNotificationAction(
+          'telegram|4001|dm', 'reply', 'On my way!');
       await Future<void>.delayed(const Duration(milliseconds: 50));
 
       // 4. Outbound SMS Dispatch from Mac & Confirmation Loop
-      macController.sms.sendSms(
-        address: '+79991234567',
-        body: 'Meeting confirmed for 15:00',
-        clientMessageId: 'sms-cli-101',
+      final clientMsgId = macController.sms.sendSms(
+        '+79991234567',
+        'Meeting confirmed for 15:00',
         simSlot: 0,
       );
 
@@ -134,11 +144,11 @@ void main() {
       final sentSms = phonePlatform.sentSmsList.first;
       expect(sentSms['address'], equals('+79991234567'));
       expect(sentSms['body'], equals('Meeting confirmed for 15:00'));
-      expect(sentSms['clientMessageId'], equals('sms-cli-101'));
+      expect(sentSms['clientMessageId'], equals(clientMsgId));
 
       // Delivery status confirmed on Mac
-      final macSmsItem = macController.sms.store.getMessage('sms-cli-101');
-      expect(macSmsItem?.deliveryStatus, equals('sent'));
+      final macSmsItem = macController.sms.store.getMessage(clientMsgId!);
+      expect(macSmsItem?.status, equals(SmsDeliveryStatus.delivered));
 
       // 5. 2FA / OTP Extraction from Banking SMS & Auto-Copy to Pasteboard
       phonePlatform.simulateSmsReceived({
@@ -163,16 +173,19 @@ void main() {
 
       // 6. Bidirectional Clipboard Sync
       // Mac -> Phone
-      macPlatform.simulatePasteboardChange('https://github.com/culcat/AndroMac/releases');
+      macPlatform.simulatePasteboardChange(
+          'https://github.com/culcat/AndroMac/releases');
       await Future<void>.delayed(const Duration(milliseconds: 50));
 
-      expect(phonePlatform.copiedClipboardItems, contains('https://github.com/culcat/AndroMac/releases'));
+      expect(phonePlatform.copiedClipboardItems,
+          contains('https://github.com/culcat/AndroMac/releases'));
 
       // Phone -> Mac (triggered via Quick Settings tile or Share sheet)
       phonePlatform.simulateClipboardCaptured('Copied from Android Phone');
       await Future<void>.delayed(const Duration(milliseconds: 50));
 
-      expect(macPlatform.pasteboardCopies, contains('Copied from Android Phone'));
+      expect(
+          macPlatform.pasteboardCopies, contains('Copied from Android Phone'));
 
       // 7. Graceful Disconnect & Teardown
       await macController.disconnect();

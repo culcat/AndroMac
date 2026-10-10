@@ -71,12 +71,16 @@ void main() {
       );
 
       feature.onMessage(userNotif);
+      await Future<void>.delayed(Duration.zero);
+
       expect(events.length, equals(1));
       expect(feature.store.count, equals(1));
-      expect(feature.store.activeNotifications.first.appName, equals('Telegram'));
+      expect(
+          feature.store.activeNotifications.first.appName, equals('Telegram'));
     });
 
-    test('dismissNotification sends envelope and marks item dismissed in store', () async {
+    test('dismissNotification sends envelope and marks item dismissed in store',
+        () async {
       final feature = NotificationsFeature();
       final channel = MockTransportChannel();
       final context = FeatureContext(peerDeviceId: 'phone-1', channel: channel);
@@ -101,7 +105,8 @@ void main() {
       final success = feature.dismissNotification('notif-key-1');
       expect(success, isTrue);
       expect(channel.sent.length, equals(1));
-      expect(channel.sent.first.type, equals(NotificationDismissPayload.messageType));
+      expect(channel.sent.first.type,
+          equals(NotificationDismissPayload.messageType));
 
       // Active count should now be 0
       expect(feature.store.count, equals(0));
@@ -124,7 +129,8 @@ void main() {
       expect(payload.replyText, equals('Thanks!'));
     });
 
-    test('receiving notif.action invokes onActionRequested callback on Android', () async {
+    test('receiving notif.action invokes onActionRequested callback on Android',
+        () async {
       String? receivedKey;
       String? receivedReply;
 

@@ -18,10 +18,12 @@ void main(List<String> args) async {
   print('Device ID: ${controller.localDeviceId}');
 
   await controller.start();
-  print('Listening for Android connections on port ${controller.server.boundPort}...');
+  print(
+      'Listening for Android connections on port ${controller.server.boundPort}...');
 
   controller.onStatusChanged.listen((status) {
-    print('[Status Update] State: ${status.state.name}, Peer: ${status.peerDeviceId ?? "none"}');
+    print(
+        '[Status Update] State: ${status.state.name}, Peer: ${status.peerDeviceId ?? "none"}');
   });
 
   print('Desktop Controller operational.');

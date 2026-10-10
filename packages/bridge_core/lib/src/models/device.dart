@@ -63,7 +63,8 @@ class Device {
   int get hashCode => id.hashCode;
 
   @override
-  String toString() => 'Device(id: $id, name: $name, platform: ${platform.name})';
+  String toString() =>
+      'Device(id: $id, name: $name, platform: ${platform.name})';
 }
 
 /// Representation of a paired peer device with security credentials and feature flags.

@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:bridge_protocol/bridge_protocol.dart';
 import 'package:bridge_crypto/bridge_crypto.dart';
 import 'package:bridge_transport/bridge_transport.dart';
-import 'package:bridge_core/bridge_core.dart';
 
 /// Simulated Android device running in CLI to test Mac controller integrations.
 class FakePhoneDevice {
@@ -12,7 +11,9 @@ class FakePhoneDevice {
   final List<String> capabilities;
 
   TransportChannel? _channel;
-  final StreamController<Envelope> _incomingEvents = StreamController<Envelope>.broadcast();
+  final StreamController<Envelope> _incomingEvents =
+      StreamController<Envelope>.broadcast();
+  StreamSubscription<Envelope>? _incomingSub;
   int _clipboardSeq = 0;
 
   FakePhoneDevice({
@@ -20,7 +21,8 @@ class FakePhoneDevice {
     this.name = 'Pixel 8 Pro (Fake)',
     this.appVersion = '1.0.0',
     List<String>? capabilities,
-  })  : deviceId = deviceId ?? 'fake-phone-${CryptoUtils.generateNumericOtp(4)}',
+  })  : deviceId =
+            deviceId ?? 'fake-phone-${CryptoUtils.generateNumericOtp(4)}',
         capabilities = capabilities ??
             const ['clipboard', 'notifications', 'sms', 'device_status'];
 
@@ -29,10 +31,12 @@ class FakePhoneDevice {
 
   /// Attaches an active transport channel and executes the initial protocol handshake.
   Future<void> attach(TransportChannel channel) async {
+    await _incomingSub?.cancel();
     _channel = channel;
 
     // Listen to messages from Mac
-    channel.incoming.listen(_handleIncomingMessage, onDone: detach);
+    _incomingSub =
+        channel.incoming.listen(_handleIncomingMessage, onDone: detach);
 
     // Send 'hello' handshake
     final helloEnvelope = Envelope.create(
@@ -52,6 +56,8 @@ class FakePhoneDevice {
 
   /// Detaches the current channel.
   void detach() {
+    _incomingSub?.cancel();
+    _incomingSub = null;
     _channel?.close();
     _channel = null;
   }

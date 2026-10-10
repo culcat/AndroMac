@@ -44,7 +44,8 @@ abstract class MacOsHostApi {
 
 /// Flutter API called from macOS Swift modules into the Flutter engine.
 abstract class MacOsFlutterApi {
-  void onNotificationAction(String identifier, String actionId, String? replyText);
+  void onNotificationAction(
+      String identifier, String actionId, String? replyText);
   void onNotificationDismissed(String identifier);
   void onSystemSleep();
   void onSystemWake();

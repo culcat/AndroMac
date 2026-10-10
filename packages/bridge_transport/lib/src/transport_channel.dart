@@ -21,7 +21,8 @@ abstract interface class TransportChannel {
 /// WebSocket-backed implementation of [TransportChannel] with integrated heartbeat handling.
 class WebSocketTransportChannel implements TransportChannel {
   final WebSocket _socket;
-  final StreamController<Envelope> _incomingController = StreamController<Envelope>.broadcast();
+  final StreamController<Envelope> _incomingController =
+      StreamController<Envelope>.broadcast();
   late final HeartbeatManager _heartbeat;
   bool _isOpen = true;
 
@@ -51,7 +52,8 @@ class WebSocketTransportChannel implements TransportChannel {
   @override
   void send(Envelope envelope) {
     if (!_isOpen) {
-      throw StateError('Cannot send envelope on closed WebSocketTransportChannel');
+      throw StateError(
+          'Cannot send envelope on closed WebSocketTransportChannel');
     }
     _socket.add(envelope.encode());
   }
@@ -77,7 +79,8 @@ class WebSocketTransportChannel implements TransportChannel {
       }
 
       // Forward non-heartbeat messages (or all messages) to application consumers
-      if (envelope.type != PingPayload.messageType && envelope.type != PongPayload.messageType) {
+      if (envelope.type != PingPayload.messageType &&
+          envelope.type != PongPayload.messageType) {
         _incomingController.add(envelope);
       }
     } catch (e) {

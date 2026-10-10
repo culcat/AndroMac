@@ -71,7 +71,8 @@ void main() {
       expect(ack.ref, equals(phoneHello.id));
       final ackPayload = HelloAckPayload.fromMap(ack.payload);
       expect(ackPayload.accepted, isTrue);
-      expect(ackPayload.agreedCapabilities, containsAll(['clipboard', 'notifications', 'sms']));
+      expect(ackPayload.agreedCapabilities,
+          containsAll(['clipboard', 'notifications', 'sms']));
     });
 
     test('sendSms dispatches sms.send envelope with clientMessageId', () async {
@@ -79,7 +80,8 @@ void main() {
       final channel = MockTransportChannel();
       await controller.attach(channel);
 
-      final clientMsgId = controller.sendSms('+15551234567', 'SMS from Fake Mac', simSlot: 0);
+      final clientMsgId =
+          controller.sendSms('+15551234567', 'SMS from Fake Mac', simSlot: 0);
       expect(clientMsgId, isNotNull);
 
       final sentSms = channel.sent.last;
@@ -90,7 +92,8 @@ void main() {
       expect(payload.clientMessageId, equals(clientMsgId));
     });
 
-    test('dismissNotification and replyNotification send proper envelopes', () async {
+    test('dismissNotification and replyNotification send proper envelopes',
+        () async {
       final controller = FakeMacController();
       final channel = MockTransportChannel();
       await controller.attach(channel);
@@ -107,7 +110,8 @@ void main() {
       expect(replyEnv.payload['replyText'], equals('Quick reply message'));
     });
 
-    test('ringPhone sends find.ring and syncClipboard sends clipboard.update', () async {
+    test('ringPhone sends find.ring and syncClipboard sends clipboard.update',
+        () async {
       final controller = FakeMacController();
       final channel = MockTransportChannel();
       await controller.attach(channel);

@@ -10,7 +10,8 @@ void main() {
     });
 
     group('SMS Storage', () {
-      test('saves messages, groups by thread, and performs full-text search', () async {
+      test('saves messages, groups by thread, and performs full-text search',
+          () async {
         final sms1 = SmsRecord(
           id: 'sms-1',
           threadId: 'th-alex',
@@ -64,9 +65,12 @@ void main() {
     });
 
     group('Notification Storage', () {
-      test('saves, dismisses, and purges notifications older than TTL', () async {
+      test('saves, dismisses, and purges notifications older than TTL',
+          () async {
         final now = DateTime.now().millisecondsSinceEpoch;
-        final oldTime = DateTime.now().subtract(const Duration(days: 10)).millisecondsSinceEpoch;
+        final oldTime = DateTime.now()
+            .subtract(const Duration(days: 10))
+            .millisecondsSinceEpoch;
 
         final notifRecent = NotificationRecord(
           key: 'tg|1',
@@ -99,7 +103,8 @@ void main() {
         expect(active.first.key, equals('wa|2'));
 
         // Purge notifications older than 7 days
-        final purged = await storage.purgeNotificationsOlderThan(const Duration(days: 7));
+        final purged =
+            await storage.purgeNotificationsOlderThan(const Duration(days: 7));
         expect(purged, equals(1));
 
         active = await storage.getActiveNotifications();

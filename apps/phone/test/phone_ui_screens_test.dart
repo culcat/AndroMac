@@ -19,7 +19,7 @@ void main() {
       );
 
       expect(view.statusBadge.label, equals('Подключено'));
-      expect(view.batteryIndicator.displayLabel, equals('88% ⚡'));
+      expect(view.batteryIndicator.displayLabel, equals('⚡ 88%'));
       expect(view.peerMacStatusCard.deviceName, equals('Alex Mac Studio'));
       expect(view.peerMacStatusCard.platform, equals('macos'));
       expect(view.screenTitle, contains('Alex Mac Studio'));

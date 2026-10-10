@@ -33,7 +33,8 @@ class IncomingTransferSession {
     }
 
     final assembledBytes = _builder.takeBytes();
-    final computedDigest = CryptoUtils.toHex(CryptoUtils.sha256(assembledBytes));
+    final computedDigest =
+        CryptoUtils.toHex(CryptoUtils.sha256(assembledBytes));
 
     if (!CryptoUtils.fixedTimeEquals(computedDigest, offer.sha256)) {
       throw FormatException(
@@ -66,7 +67,11 @@ class OutgoingTransferSession {
     required this.offer,
     required this.fileBytes,
     this.chunkSize = defaultChunkSize,
-  }) : totalChunks = (fileBytes.isEmpty) ? 1 : (fileBytes.length / (chunkSize <= 0 ? defaultChunkSize : chunkSize)).ceil();
+  }) : totalChunks = (fileBytes.isEmpty)
+            ? 1
+            : (fileBytes.length /
+                    (chunkSize <= 0 ? defaultChunkSize : chunkSize))
+                .ceil();
 
   bool get hasMoreChunks => !_isCancelled && _currentChunkIndex < totalChunks;
   bool get isCancelled => _isCancelled;
@@ -79,7 +84,9 @@ class OutgoingTransferSession {
     }
 
     final start = _currentChunkIndex * chunkSize;
-    final end = (start + chunkSize < fileBytes.length) ? start + chunkSize : fileBytes.length;
+    final end = (start + chunkSize < fileBytes.length)
+        ? start + chunkSize
+        : fileBytes.length;
     final slice = fileBytes.sublist(start, end);
 
     final payload = <String, dynamic>{

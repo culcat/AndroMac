@@ -40,7 +40,8 @@ void main() {
   });
 
   group('MacOsBridgePlatform & MockMacOsPlatform', () {
-    test('captures notifications, tray updates, and pasteboard changes', () async {
+    test('captures notifications, tray updates, and pasteboard changes',
+        () async {
       final platform = MockMacOsPlatform();
 
       await platform.showNotification(
@@ -49,7 +50,8 @@ void main() {
         body: 'Battery low',
       );
       expect(platform.displayedNotifications.length, equals(1));
-      expect(platform.displayedNotifications.first['title'], equals('Mac Alert'));
+      expect(
+          platform.displayedNotifications.first['title'], equals('Mac Alert'));
 
       await platform.removeNotification('notif-1');
       expect(platform.displayedNotifications, isEmpty);
@@ -83,7 +85,8 @@ void main() {
         onPasteboardChanged: (_) {},
       );
 
-      platform.simulateNotificationAction('notif-1', 'reply_btn', 'Great news!');
+      platform.simulateNotificationAction(
+          'notif-1', 'reply_btn', 'Great news!');
       expect(actionIdReceived, equals('reply_btn'));
       expect(replyTextReceived, equals('Great news!'));
     });

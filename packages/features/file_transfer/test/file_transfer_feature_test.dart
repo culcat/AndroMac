@@ -33,13 +33,15 @@ class MockTransportChannel implements TransportChannel {
 
 void main() {
   group('FileTransferFeature', () {
-    test('offerFile calculates SHA-256 and sends file.offer envelope', () async {
+    test('offerFile calculates SHA-256 and sends file.offer envelope',
+        () async {
       final feature = FileTransferFeature(localDeviceId: 'mac-1');
       final channel = MockTransportChannel();
       final context = FeatureContext(peerDeviceId: 'phone-1', channel: channel);
       await feature.start(context);
 
-      final fileData = Uint8List.fromList(utf8.encode('Hello, andromac file transfer!'));
+      final fileData =
+          Uint8List.fromList(utf8.encode('Hello, andromac file transfer!'));
       final expectedSha = CryptoUtils.toHex(CryptoUtils.sha256(fileData));
 
       final transferId = feature.offerFile(
@@ -59,18 +61,24 @@ void main() {
       expect(offerPayload.sha256, equals(expectedSha));
     });
 
-    test('accepting file streams chunks and verifies SHA-256 integrity on completion', () async {
+    test(
+        'accepting file streams chunks and verifies SHA-256 integrity on completion',
+        () async {
       final senderFeature = FileTransferFeature(localDeviceId: 'sender-device');
       final senderChannel = MockTransportChannel();
-      final senderContext = FeatureContext(peerDeviceId: 'receiver-device', channel: senderChannel);
+      final senderContext = FeatureContext(
+          peerDeviceId: 'receiver-device', channel: senderChannel);
       await senderFeature.start(senderContext);
 
-      final receiverFeature = FileTransferFeature(localDeviceId: 'receiver-device');
+      final receiverFeature =
+          FileTransferFeature(localDeviceId: 'receiver-device');
       final receiverChannel = MockTransportChannel();
-      final receiverContext = FeatureContext(peerDeviceId: 'sender-device', channel: receiverChannel);
+      final receiverContext = FeatureContext(
+          peerDeviceId: 'sender-device', channel: receiverChannel);
       await receiverFeature.start(receiverContext);
 
-      final fileBytes = Uint8List.fromList(utf8.encode('Top secret document content for transfer.'));
+      final fileBytes = Uint8List.fromList(
+          utf8.encode('Top secret document content for transfer.'));
 
       // 1. Sender offers file
       final transferId = senderFeature.offerFile(
@@ -91,8 +99,11 @@ void main() {
       senderFeature.onMessage(acceptEnvelope);
 
       // 5. Sender should now have transmitted chunk(s) and done envelope
-      final chunkEnvelopes = senderChannel.sent.where((e) => e.type == FileTransferFeature.typeChunk).toList();
-      final doneEnvelope = senderChannel.sent.firstWhere((e) => e.type == FileTransferFeature.typeDone);
+      final chunkEnvelopes = senderChannel.sent
+          .where((e) => e.type == FileTransferFeature.typeChunk)
+          .toList();
+      final doneEnvelope = senderChannel.sent
+          .firstWhere((e) => e.type == FileTransferFeature.typeDone);
 
       expect(chunkEnvelopes, isNotEmpty);
       expect(doneEnvelope, isNotNull);
@@ -106,14 +117,18 @@ void main() {
       }
       receiverFeature.onMessage(doneEnvelope);
 
-      final result = await receivedBytesCompleter.future.timeout(const Duration(seconds: 2));
-      expect(utf8.decode(result), equals('Top secret document content for transfer.'));
+      final result = await receivedBytesCompleter.future
+          .timeout(const Duration(seconds: 2));
+      expect(utf8.decode(result),
+          equals('Top secret document content for transfer.'));
     });
 
     test('tampered chunk fails SHA-256 verification cleanly', () async {
-      final receiverFeature = FileTransferFeature(localDeviceId: 'receiver-device');
+      final receiverFeature =
+          FileTransferFeature(localDeviceId: 'receiver-device');
       final receiverChannel = MockTransportChannel();
-      final receiverContext = FeatureContext(peerDeviceId: 'sender-device', channel: receiverChannel);
+      final receiverContext = FeatureContext(
+          peerDeviceId: 'sender-device', channel: receiverChannel);
       await receiverFeature.start(receiverContext);
 
       final progressEvents = <FileTransferProgress>[];

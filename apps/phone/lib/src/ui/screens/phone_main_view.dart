@@ -128,7 +128,9 @@ class PhoneMainViewConfig {
   String get screenTitle {
     switch (activeTab) {
       case PhoneTab.status:
-        return isConnected ? '${strings.connected} (${peerMacName ?? "Mac"})' : 'AndroMac';
+        return isConnected
+            ? '${strings.connected} (${peerMacName ?? "Mac"})'
+            : 'AndroMac';
       case PhoneTab.pairing:
         return strings.scanQrCode;
       case PhoneTab.settings:

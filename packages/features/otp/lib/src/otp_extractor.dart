@@ -84,7 +84,10 @@ class OtpExtractor {
     if (clean.length < 4 || clean.length > 8) return false;
 
     // Reject obvious current calendar years
-    if (clean == '2024' || clean == '2025' || clean == '2026' || clean == '2027') {
+    if (clean == '2024' ||
+        clean == '2025' ||
+        clean == '2026' ||
+        clean == '2027') {
       return false;
     }
 

@@ -78,7 +78,8 @@ class RemoteInputEvent {
   }
 
   @override
-  String toString() => 'RemoteInputEvent(type: ${type.name}, x: $xRatio, y: $yRatio, text: $text)';
+  String toString() =>
+      'RemoteInputEvent(type: ${type.name}, x: $xRatio, y: $yRatio, text: $text)';
 }
 
 /// Streaming and encoding parameters for scrcpy-server or native media projection.

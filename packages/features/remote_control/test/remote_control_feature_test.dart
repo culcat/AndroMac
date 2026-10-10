@@ -30,7 +30,8 @@ class MockTransportChannel implements TransportChannel {
 
 void main() {
   group('RemoteControlFeature', () {
-    test('sendInput dispatches normalized remote.control.input envelope', () async {
+    test('sendInput dispatches normalized remote.control.input envelope',
+        () async {
       final feature = RemoteControlFeature();
       final channel = MockTransportChannel();
       final context = FeatureContext(peerDeviceId: 'phone-1', channel: channel);
@@ -70,7 +71,8 @@ void main() {
       expect(envelope.payload['button'], equals('home'));
     });
 
-    test('requestSetup dispatches remote.setup.request with streaming profile', () async {
+    test('requestSetup dispatches remote.setup.request with streaming profile',
+        () async {
       final feature = RemoteControlFeature();
       final channel = MockTransportChannel();
       final context = FeatureContext(peerDeviceId: 'phone-1', channel: channel);
@@ -94,7 +96,9 @@ void main() {
       expect(parsed.bitRateMbps, equals(12));
     });
 
-    test('receiving input triggers callbacks and emits on stream on Android provider', () async {
+    test(
+        'receiving input triggers callbacks and emits on stream on Android provider',
+        () async {
       RemoteInputEvent? receivedInput;
       AndroidNavButton? receivedNav;
 

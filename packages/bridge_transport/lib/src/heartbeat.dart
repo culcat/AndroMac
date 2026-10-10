@@ -53,7 +53,8 @@ class HeartbeatManager {
     _unacknowledgedPings++;
     final ping = Envelope.create(
       type: PingPayload.messageType,
-      payload: PingPayload(timestamp: DateTime.now().millisecondsSinceEpoch).toMap(),
+      payload:
+          PingPayload(timestamp: DateTime.now().millisecondsSinceEpoch).toMap(),
     );
     onSendPing(ping);
   }

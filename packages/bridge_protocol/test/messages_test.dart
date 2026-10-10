@@ -137,7 +137,8 @@ void main() {
         publicKeyFingerprint: 'sha256:abc',
         pairingCode: '123456',
       );
-      expect(PairRequestPayload.fromMap(pairReq.toMap()).pairingCode, equals('123456'));
+      expect(PairRequestPayload.fromMap(pairReq.toMap()).pairingCode,
+          equals('123456'));
 
       final pairAccept = PairAcceptPayload(
         deviceId: 'phone-id',
@@ -145,7 +146,8 @@ void main() {
         sasCode: '987654',
         publicKeyFingerprint: 'sha256:def',
       );
-      expect(PairAcceptPayload.fromMap(pairAccept.toMap()).sasCode, equals('987654'));
+      expect(PairAcceptPayload.fromMap(pairAccept.toMap()).sasCode,
+          equals('987654'));
     });
   });
 }

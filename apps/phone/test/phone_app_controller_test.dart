@@ -34,7 +34,9 @@ class MockTransportChannel implements TransportChannel {
 
 void main() {
   group('PhoneAppController Orchestration', () {
-    test('handles peer connection, sends hello, receives hello from Mac, and sends hello.ack', () async {
+    test(
+        'handles peer connection, sends hello, receives hello from Mac, and sends hello.ack',
+        () async {
       final mockPlatform = MockAndroidPlatform();
       final controller = PhoneAppController(
         deviceName: 'Pixel 8',
@@ -63,7 +65,14 @@ void main() {
           platform: 'macos',
           appVersion: '1.0.0',
           protocolVersion: 1,
-          capabilities: ['clipboard', 'notifications', 'sms', 'device_status', 'otp', 'file_transfer'],
+          capabilities: [
+            'clipboard',
+            'notifications',
+            'sms',
+            'device_status',
+            'otp',
+            'file_transfer'
+          ],
         ).toMap(),
       );
 
@@ -71,16 +80,19 @@ void main() {
       await Future<void>.delayed(const Duration(milliseconds: 20));
 
       // Controller should have sent hello.ack and initial battery status
-      final ackSent = channel.sent.firstWhere((e) => e.type == HelloAckPayload.messageType);
+      final ackSent =
+          channel.sent.firstWhere((e) => e.type == HelloAckPayload.messageType);
       expect(ackSent.ref, equals(macHello.id));
       expect(ackSent.payload['accepted'], isTrue);
 
       expect(controller.isConnected, isTrue);
-      expect(controller.connectionStatus.state, equals(ConnectionState.connected));
+      expect(
+          controller.connectionStatus.state, equals(ConnectionState.connected));
       expect(controller.connectionStatus.peerDeviceId, equals('mac-studio-1'));
     });
 
-    test('receives native notification and broadcasts notif.posted to Mac', () async {
+    test('receives native notification and broadcasts notif.posted to Mac',
+        () async {
       final mockPlatform = MockAndroidPlatform();
       final controller = PhoneAppController(platform: mockPlatform);
       final channel = MockTransportChannel();
@@ -123,7 +135,8 @@ void main() {
       expect(notifEnvelope.payload['canReply'], isTrue);
     });
 
-    test('receives native SMS, broadcasts to Mac, and triggers OTP extraction', () async {
+    test('receives native SMS, broadcasts to Mac, and triggers OTP extraction',
+        () async {
       final mockPlatform = MockAndroidPlatform();
       final controller = PhoneAppController(platform: mockPlatform);
       final channel = MockTransportChannel();
@@ -160,7 +173,8 @@ void main() {
       expect(smsEnvelope.payload['body'], contains('492018'));
     });
 
-    test('receives sms.send from Mac and triggers native platform dispatch', () async {
+    test('receives sms.send from Mac and triggers native platform dispatch',
+        () async {
       final mockPlatform = MockAndroidPlatform();
       final controller = PhoneAppController(platform: mockPlatform);
       final channel = MockTransportChannel();
@@ -205,10 +219,11 @@ void main() {
         (e) => e.type == SmsSentStatusPayload.messageType,
       );
       expect(statusConfirm.payload['clientMessageId'], equals('cli-sms-99'));
-      expect(statusConfirm.payload['status'], equals('sent'));
+      expect(statusConfirm.payload['success'], isTrue);
     });
 
-    test('receives clipboard update from Mac and copies to Android clipboard', () async {
+    test('receives clipboard update from Mac and copies to Android clipboard',
+        () async {
       final mockPlatform = MockAndroidPlatform();
       final controller = PhoneAppController(platform: mockPlatform);
       final channel = MockTransportChannel();
@@ -230,16 +245,19 @@ void main() {
       final clipEnvelope = Envelope.create(
         type: ClipboardPayload.messageType,
         payload: const ClipboardPayload(
-          content: 'https://github.com/culcat/AndroMac',
-          mimeType: 'text/plain',
-          originDeviceId: 'mac-1',
+          data: 'https://github.com/culcat/AndroMac',
+          mime: 'text/plain',
+          origin: 'mac-1',
+          hash: '',
+          seq: 0,
         ).toMap(),
       );
 
       channel.pushMessage(clipEnvelope);
       await Future<void>.delayed(const Duration(milliseconds: 20));
 
-      expect(mockPlatform.copiedClipboardItems, contains('https://github.com/culcat/AndroMac'));
+      expect(mockPlatform.copiedClipboardItems,
+          contains('https://github.com/culcat/AndroMac'));
     });
 
     test('triggers Find My Phone ring alert when requested by Mac', () async {
@@ -278,7 +296,8 @@ void main() {
       expect(ringReason, equals('User lost phone in room'));
     });
 
-    test('broadcasts battery updates when native platform reports change', () async {
+    test('broadcasts battery updates when native platform reports change',
+        () async {
       final mockPlatform = MockAndroidPlatform();
       final controller = PhoneAppController(platform: mockPlatform);
       final channel = MockTransportChannel();
@@ -304,14 +323,16 @@ void main() {
       expect(controller.batteryLevel, equals(87));
       expect(controller.isCharging, isTrue);
 
-      final batteryEnvelopes = channel.sent.where((e) => e.type == DeviceStatusPayload.messageType);
+      final batteryEnvelopes =
+          channel.sent.where((e) => e.type == DeviceStatusPayload.messageType);
       expect(batteryEnvelopes.isNotEmpty, isTrue);
       final latestBattery = batteryEnvelopes.last;
       expect(latestBattery.payload['batteryLevel'], equals(87));
       expect(latestBattery.payload['isCharging'], isTrue);
     });
 
-    test('disconnect and stop properly cleans up server and active connection', () async {
+    test('disconnect and stop properly cleans up server and active connection',
+        () async {
       final mockPlatform = MockAndroidPlatform();
       final controller = PhoneAppController(platform: mockPlatform);
       final channel = MockTransportChannel();
@@ -322,7 +343,8 @@ void main() {
       await controller.disconnect();
 
       expect(controller.isConnected, isFalse);
-      expect(controller.connectionStatus.state, equals(ConnectionState.disconnected));
+      expect(controller.connectionStatus.state,
+          equals(ConnectionState.disconnected));
 
       await controller.stop();
       expect(mockPlatform.isForegroundServiceRunning, isFalse);

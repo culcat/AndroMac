@@ -30,7 +30,9 @@ class MockTransportChannel implements TransportChannel {
 
 void main() {
   group('DeviceStatusFeature', () {
-    test('broadcastLocalStatus sends device.status envelope with battery/network info', () async {
+    test(
+        'broadcastLocalStatus sends device.status envelope with battery/network info',
+        () async {
       final feature = DeviceStatusFeature();
       final channel = MockTransportChannel();
       final context = FeatureContext(peerDeviceId: 'mac-1', channel: channel);
@@ -76,6 +78,7 @@ void main() {
       );
 
       feature.onMessage(incomingEnvelope);
+      await Future<void>.delayed(Duration.zero);
 
       expect(statusEvents.length, equals(1));
       final state = feature.currentStatus;
@@ -94,10 +97,13 @@ void main() {
       final success = feature.ringRemotePhone();
       expect(success, isTrue);
       expect(channel.sent.length, equals(1));
-      expect(channel.sent.first.type, equals(DeviceStatusFeature.ringMessageType));
+      expect(
+          channel.sent.first.type, equals(DeviceStatusFeature.ringMessageType));
     });
 
-    test('receiving find.ring triggers onRingTriggered stream and callback on Android', () async {
+    test(
+        'receiving find.ring triggers onRingTriggered stream and callback on Android',
+        () async {
       var callbackInvoked = false;
       final feature = DeviceStatusFeature(
         onRingRequested: () => callbackInvoked = true,
