@@ -1,5 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.andromac.bridge">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -80,7 +79,7 @@
             android:name=".ClipboardTileService"
             android:enabled="true"
             android:exported="true"
-            android:icon="@drawable/ic_sync"
+            android:icon="@android:drawable/stat_notify_sync"
             android:label="Sync to Mac"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>

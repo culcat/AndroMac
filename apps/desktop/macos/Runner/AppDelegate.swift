@@ -4,13 +4,14 @@ import FlutterMacOS
 @main
 class AppDelegate: FlutterAppDelegate {
 
+    @IBOutlet var mainFlutterWindow: NSWindow?
     private var hostApi: MacOsHostApiImpl?
 
     override func applicationDidFinishLaunching(_ aNotification: Notification) {
-        let controller: FlutterViewController = mainFlutterWindow?.contentViewController as! FlutterViewController
-
-        // Initialize native macOS Host API bridge with Flutter binary messenger
-        hostApi = MacOsHostApiImpl(binaryMessenger: controller.engine.binaryMessenger)
+        if let controller = mainFlutterWindow?.contentViewController as? FlutterViewController {
+            // Initialize native macOS Host API bridge with Flutter binary messenger
+            hostApi = MacOsHostApiImpl(binaryMessenger: controller.engine.binaryMessenger)
+        }
 
         // Initialize macOS system menu bar tray item
         TrayManager.shared.setup(

@@ -1,13 +1,10 @@
 import 'dart:io';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:bridge_platform/bridge_platform.dart';
 import 'package:andromac_phone/phone_app.dart';
 
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
-  print('====================================================');
-  print('     AndroMac Android Phone Controller (Engine)     ');
-  print('====================================================');
 
   final mockPlatform = MockAndroidPlatform();
   final controller = PhoneAppController(
@@ -31,11 +28,46 @@ void main(List<String> args) async {
   });
 
   print('Android Phone Controller operational.');
-  print('Press Ctrl+C to terminate.');
+
+  runApp(const AndroMacPhoneApp());
 
   ProcessSignal.sigint.watch().listen((_) async {
     print('\nShutting down AndroMac Phone Controller...');
     await controller.stop();
     exit(0);
   });
+}
+
+class AndroMacPhoneApp extends StatelessWidget {
+  const AndroMacPhoneApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'AndroMac',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.dark(),
+      home: Scaffold(
+        appBar: AppBar(title: const Text('AndroMac')),
+        body: const Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.phone_android, size: 64, color: Colors.greenAccent),
+              SizedBox(height: 16),
+              Text(
+                'AndroMac Mobile Service Active',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8),
+              Text(
+                'Foreground Service & mTLS listening',
+                style: TextStyle(color: Colors.grey),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
