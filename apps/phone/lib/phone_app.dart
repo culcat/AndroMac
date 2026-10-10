@@ -3,3 +3,4 @@ library andromac_phone;
 
 export 'src/phone_app_controller.dart';
 export 'src/ui/phone_app_view_model.dart';
+export 'src/ui/screens/phone_main_view.dart';
