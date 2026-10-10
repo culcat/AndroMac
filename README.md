@@ -115,15 +115,27 @@ dart run tools/fake_phone/bin/fake_phone.dart --mac-host localhost --mac-port 87
 ```
 
 ### Сборка приложений
+Так как проект организован как монорепозиторий, приложения собираются из соответствующих директорий (`apps/desktop` и `apps/phone`) либо с помощью удобных Makefile/скрипт-ярлыков:
+
 ```bash
 # Сборка настольного приложения для macOS
-flutter build macos --release
+cd apps/desktop && flutter build macos --release
+# либо из корня:
+make build-mac
+# либо:
+./scripts/build_macos.sh
 
 # Сборка Android APK с полным функционалом SMS (Direct distribution)
-flutter build apk --flavor direct --release
+cd apps/phone && flutter build apk --flavor direct --release
+# либо из корня:
+make build-android
+# либо:
+./scripts/build_android.sh
 
 # Сборка Android App Bundle для Google Play (Play compliant flavor)
-flutter build appbundle --flavor play --release
+cd apps/phone && flutter build appbundle --flavor play --release
+# либо из корня:
+make build-android-play
 ```
 
 ---

@@ -84,14 +84,22 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   ```
 
 ### Building
-- macOS desktop application:
+- macOS desktop application (run from `apps/desktop` or via root shortcuts):
   ```bash
-  flutter build macos
+  cd apps/desktop && flutter build macos --release
+  # or from root:
+  make build-mac
+  # or:
+  ./scripts/build_macos.sh
   ```
-- Android APKs:
+- Android APKs (run from `apps/phone` or via root shortcuts):
   ```bash
-  flutter build apk --flavor direct   # Full-featured version (SMS, direct distribution)
-  flutter build apk --flavor play     # Google Play compliant flavor
+  cd apps/phone && flutter build apk --flavor direct --release   # Full-featured version (SMS, direct distribution)
+  cd apps/phone && flutter build apk --flavor play --release     # Google Play compliant flavor
+  # or from root:
+  make build-android
+  # or:
+  ./scripts/build_android.sh
   ```
 
 ### Tools & Development Emulation
