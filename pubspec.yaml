@@ -22,3 +22,4 @@ workspace:
   - tools/fake_phone
   - tools/fake_mac
   - apps/desktop
+  - apps/phone
