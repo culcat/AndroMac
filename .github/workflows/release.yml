@@ -68,7 +68,7 @@ jobs:
       - name: Build macOS Release Application
         run: |
           cd apps/desktop
-          flutter build macos --release --no-codesign
+          flutter build macos --release
 
       - name: Create DMG Disk Image
         run: |
